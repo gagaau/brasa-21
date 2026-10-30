@@ -1,0 +1,876 @@
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #222;
+  background-color: #f3f3f3;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
+
+button {
+  background-color: white;
+  color: #222;
+  border: 1px solid #999;
+  border-radius: 6px;
+  padding: 10px 14px;
+  cursor: pointer
+}
+
+button:hover:not(:disabled) {
+  background-color: #e9e9e9;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input:not([type="checkbox"]), textarea, select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  background-color: white;
+  color: #222;
+}
+
+textarea {
+  min-height: 85px;
+  resize: vertical;
+}
+
+input[type="checkbox"] {
+  width: auto;
+}
+
+h1, h2, h3 {
+  margin-top: 0;
+}
+
+p {
+  line-height: 1.5;
+}
+
+.app {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 14px 60px;
+}
+
+/* Login e cadastro */
+
+.paginaAuth {
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 24px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 10px
+}
+
+.paginaAuth h1 {
+  text-align: center
+}
+
+.paginaAuth form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.paginaAuth form p {
+  margin: 0;
+}
+
+.paginaAuth label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.paginaAuth details {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #f7f7f7;
+}
+
+/* Cabeçalho do usuario */
+
+.barraDeUsuario {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 15px;
+  margin-bottom: 24px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px
+}
+
+.barraDeUsuario p {
+  margin: 0;
+}
+
+.usuarioActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Seleção de unidade */
+
+.paginaHeading {
+  margin-bottom: 20px;
+}
+
+.paginaHeading p {
+  color: #555
+}
+
+.unitGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.unitCard {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.unitCard h2 {
+  font-size: 20px;
+}
+
+.unitCard p {
+  margin: 6px 0;
+}
+
+.unitStatus {
+  font-weight: bold;
+}
+
+.unitCard button {
+  margin-top: 18px;
+  align-self: flex-start;
+}
+
+/* Cardapio */
+
+.menuHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px
+}
+
+.menuHeader p {
+  color: #555;
+}
+
+.bannerPromocao {
+  padding: 20px;
+  margin-bottom: 24px;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  background-color: #dedede;
+}
+
+.bannerPromocao h2 {
+  margin-bottom: 10px;
+}
+
+.bannerPromocao p {
+  margin: 6px 0;
+}
+
+.categorias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0 24px;
+}
+
+.categorias .selected {
+  background-color: #333;
+  color: white;
+  border-color: #333;
+}
+
+.categorias .selected:hover {
+  background-color: #444;
+}
+
+.produtoGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px
+}
+
+.produtoCard {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.produtoCard h2 {
+  font-size: 20px;
+}
+
+.produtoCard p {
+  margin: 8px 0;
+}
+
+.promocaoLabel {
+  font-weight: bold;
+}
+
+.precoAntigo {
+  color: #777;
+}
+
+.produtoPreco {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.produtoCard button {
+  margin-top: auto
+}
+
+.menuSumario {
+  margin-top: 24px;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+/* Janela d detalhes */
+
+.modalBackground {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  background-color: rgba(0, 0, 0, 0.55);
+}
+
+.modalConteudo {
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px;
+  background-color: white;
+  border-radius: 10px
+}
+
+.botoesQuantidade {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.botoesQuantidade p {
+  margin: 0;
+}
+
+.modalActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Desktop */
+
+@media (min-width: 768px) {
+
+  .app {
+    padding: 32px 24px 60px;
+  }
+
+  .barraDeUsuario {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center
+  }
+
+  .unitGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .menuHeader {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .produtoGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (min-width: 1000px) {
+
+  .produtoGrid {
+    grid-template-columns: repeat(3, 1fr)
+  }
+
+}
+
+
+/* Carrinho, finalizacao, pedido e perfil */
+
+.paginaCarrinho, .paginaFinalizacao, .paginaPedido, .paginaPerfil {
+  margin-top: 16px;
+}
+
+.carrinhoLayout, .finalizacaoLayout, .pedidoLayout, .perfilLayout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.listaCarrinho, .finalizacaoPrincipal, .perfilColuna {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.produtoCarrinho, .resumoCarrinho, .finalizacaoCard, .resumoFinalizacao, .pedidoCard, .perfilCard {
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  min-width: 0;
+}
+
+.produtoCarrinho h2, .finalizacaoCard h2, .pedidoCard h2, .perfilCard h2 {
+  font-size: 21px;
+}
+
+.produtoCarrinho p {
+  margin: 8px 0;
+}
+
+/* Carrinho */
+
+.botoesCarrinho {
+  display: flex;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.botoesCarrinho button {
+  min-width: 45px;
+}
+
+.produtoCarrinho textarea {
+  margin-bottom: 12px;
+}
+
+.resumoCarrinho h2 {
+  margin-bottom: 18px;
+}
+
+.resumoCarrinho p {
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.acoesCarrinho, .acoesFinalizacao {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.acoesCarrinho button, .acoesFinalizacao button {
+  width: 100%;
+}
+
+/* Finalizacao */
+
+.finalizacaoCard h2:not(:first-child) {
+  margin-top: 24px;
+}
+
+.itemFinalizacao {
+  padding: 14px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.itemFinalizacao:last-child {
+  border-bottom: none;
+}
+
+.itemFinalizacao h3 {
+  margin-bottom: 8px;
+}
+
+.itemFinalizacao p {
+  margin: 5px 0;
+}
+
+.finalizacaoCard label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.resumoFinalizacao select {
+  margin-bottom: 15px;
+}
+
+.resumoFinalizacao h2 {
+  margin-top: 16px;
+}
+
+.resumoFinalizacao h2:first-child {
+  margin-top: 0;
+}
+
+.resumoFinalizacao p {
+  margin: 10px 0;
+}
+
+.resumoFinalizacao p[role="alert"] {
+  padding: 12px;
+  background-color: #eee;
+  border: 1px solid #999;
+  border-radius: 6px;
+}
+
+/* Acompanhamento do pedido*/
+
+.etapasPedido {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.etapaPedido {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px
+}
+
+.etapaPedido span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #aaa;
+  border-radius: 50%;
+  flex-shrink: 0
+}
+
+.etapaPedido p {
+  margin: 0
+}
+
+.etapaConcluida {
+  background-color: #e9e9e9;
+}
+
+.etapaAtual {
+  background-color: #333;
+  color: white;
+  border-color: #333;
+}
+
+.etapaAtual span {
+  border-color: white;
+}
+
+.itemPedido {
+  padding: 12px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.itemPedido p {
+  margin: 5px 0;
+}
+
+.paginaPedido > button {
+  margin-top: 20px;
+}
+
+/* Perfil e fidelidade */
+
+.perfilCard p {
+  margin: 10px 0
+}
+
+.saldoPontos {
+  font-size: 28px;
+  margin-top: 10px;
+}
+
+.recompensa {
+  padding: 15px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.recompensa:last-child {
+  border-bottom: none;
+}
+
+.recompensa h3 {
+  margin-bottom: 8px;
+}
+
+.preferenciaPromocoes {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.preferenciaPromocoes input {
+  margin-top: 4px;
+}
+
+.paginaPerfil > button {
+  margin-top: 20px
+}
+
+/* Desktop */
+
+@media (min-width: 768px) {
+
+  .carrinhoLayout, .finalizacaoLayout {
+    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  }
+
+  .pedidoLayout, .perfilLayout {
+    grid-template-columns: repeat(2, minmax(0, 1fr))
+  }
+}
+
+/* Campanha geral */
+
+.bannerCampanha {
+  padding: 20px;
+  margin-bottom: 16px;
+  background-color: white;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+}
+
+.bannerCampanha h2 {
+  margin-bottom: 10px;
+}
+
+.bannerCampanha p {
+  margin: 6px 0;
+}
+
+
+/* Ajustes de login e cadastro */
+
+.textoAuth {
+  text-align: center;
+  margin-bottom: 24px
+}
+
+.authLayout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.authCard {
+  padding: 20px;
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  min-width: 0
+}
+
+.authCard h2 {
+  margin-bottom: 18px;
+}
+
+.authCard form {
+  margin: 0;
+}
+
+.authCard form button[type="submit"] {
+  margin-top: 12px;
+}
+
+.authCard details {
+  margin: 10px 0;
+}
+
+.authCard label {
+  margin: 8px 0;
+}
+
+.authCard .avisoAuth {
+  padding: 12px;
+  background-color: #eee;
+  border: 1px solid #999;
+  border-radius: 6px
+}
+
+.contaTeste {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.continuarVisitante {
+  text-align: center;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+}
+
+.continuarVisitante p {
+  margin-top: 0;
+}
+
+/* Desktop */
+
+@media (min-width: 768px) {
+
+  .authLayout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+
+/* Totem de auto atendimento */
+
+.paginaTotem {
+  width: 100%;
+}
+
+.topoTotem {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.topoTotem h1 {
+  margin-bottom: 8px
+}
+
+.topoTotem p {
+  margin: 0
+}
+
+.totemLayout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.carrinhoTotem {
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  min-width: 0;
+}
+
+.carrinhoTotem h2 {
+  margin-bottom: 16px
+}
+
+.itemTotem {
+  padding: 16px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.itemTotem h3 {
+  margin-bottom: 10px;
+}
+
+.itemTotem p {
+  margin: 8px 0;
+}
+
+.botoesTotem {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.totalTotem {
+  margin: 20px 0;
+  padding-top: 16px;
+  border-top: 1px solid #bbb;
+}
+
+.carrinhoTotem > button {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.loginTotem {
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 24px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px
+}
+
+.loginTotem form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.loginTotem form p {
+  margin: 0;
+}
+
+.loginTotem > button {
+  margin-top: 12px;
+}
+
+.paginaTotem button {
+  min-height: 48px;
+  padding: 12px 18px;
+}
+
+.paginaTotem input:not([type="checkbox"]), .paginaTotem select {
+  min-height: 48px;
+}
+
+/* O resumo do menu nao precisa aprecer duas vezes */
+
+.paginaTotem .menuSumario {
+  display: none;
+}
+
+/* Desktop e telas maiores */
+
+@media (min-width: 768px) {
+
+  .topoTotem {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .totemLayout {
+    grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  }
+
+  .carrinhoTotem {
+    position: sticky;
+    top: 16px;
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+  }
+
+}
+
+@media (min-width: 1000px) {
+
+  .paginaTotem .produtoGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+/* Painel operacional */
+
+.paginaOperacao {
+  margin-top: 16px;
+}
+
+.operacaoGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin: 20px 0 24px;
+}
+
+.operacaoCard, .pedidoOperacao {
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.operacaoCard h3 {
+  margin-bottom: 12px;
+}
+
+.operacaoCard p {
+  margin: 8px 0;
+}
+
+.pedidoOperacao {
+  margin-bottom: 20px;
+}
+
+.itemOperacao {
+  padding: 12px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.itemOperacao p {
+  margin: 6px 0;
+}
+
+.pedidoOperacao button {
+  margin-top: 12px;
+}
+
+@media (min-width: 768px) {
+
+  .operacaoGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
