@@ -6,6 +6,10 @@ A proposta é simular diferentes etapas da experiência de um restaurante em uma
 
 ![Banner do BRASA 21](./public/images/hero-brasa21.png)
 
+## Demonstração
+
+[Acessar BRASA 21](https://brasa-21.vercel.app/)
+
 ## Funcionalidades
 
 ### Experiência do cliente
