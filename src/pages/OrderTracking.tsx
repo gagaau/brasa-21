@@ -5,113 +5,187 @@ type OrderTrackingProps = {
   voltarInicio: () => void;
 };
 
-
-
-export function OrderTracking({pedido, voltarInicio}: OrderTrackingProps) {
-
+export function OrderTracking({ pedido, voltarInicio }: OrderTrackingProps) {
   const etapas = [
-    "Recebido",
-    "Em preparação",
-    "Pronto para retirada",
-    "Concluído"
+    { nome: "Recebido", descricao: "Seu pedido entrou na fila da cozinha." },
+    { nome: "Em preparação", descricao: "Estamos preparando seus produtos." },
+    { nome: "Pronto para retirada", descricao: "Seu pedido está esperando por você no balcão." },
+    { nome: "Concluído", descricao: "Pedido retirado e pontos de fidelidade creditados." }
   ];
 
+  const indiceAtual = etapas.findIndex((etapa) => etapa.nome === pedido.status);
+  const pedidoConcluido = pedido.status === "Concluído";
 
-  const indiceAtual = etapas.indexOf(pedido.status);
+  const quantidadeProdutos = pedido.items.reduce((total, item) => {
+    return total + item.quantity;
+  }, 0);
 
-  
+  function formatarPreco(valor: number) {
+    return valor.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL"
+    });
+  }
+
   return (
-    <div className="paginaPedido">
+    <main className="paginaPedido brasaPedido">
+      <div className="paginaHeading brasaPedidoCabecalho">
+        <span className="brasaEtiqueta">BRASA 21 · ACOMPANHAMENTO</span>
 
-      <div className="paginaHeading">
-        <h1>Acompanhar pedido</h1>
-        <p>Pedido nº {pedido.id}</p>
-        <p>Pagamento aprovado via {pedido.paymentMethod}.</p>
+        <div className="brasaPedidoTitulo">
+          <div>
+            <h1>{pedidoConcluido ? "PEDIDO FINALIZADO." : "SEU PEDIDO TÁ NA BRASA."}</h1>
+            <p>Acompanhe as etapas do preparo e confira os detalhes da retirada.</p>
+          </div>
 
-        {pedido.usedPoints > 0 && (
-          <p>Pontos utilizados: {pedido.usedPoints}</p>
-        )}
+          <span className="brasaPedidoNumero">PEDIDO Nº {pedido.id}</span>
+        </div>
       </div>
 
-      <div className="pedidoLayout">
+      <section className="brasaPedidoDestaque" aria-label="Situação atual do pedido">
+        <div>
+          <span className="brasaPedidoRotulo">STATUS ATUAL</span>
+          <h2 role="status" aria-live="polite">{pedido.status}</h2>
+          <p>{etapas[indiceAtual]?.descricao}</p>
+        </div>
 
-        <div className="pedidoCard">
+        <span className="brasaPedidoContador">
+          ETAPA {indiceAtual + 1} DE {etapas.length}
+        </span>
+      </section>
 
-          <h2>Status do pedido</h2>
+      <div className="pedidoLayout brasaPedidoLayout">
+        <section className="pedidoCard brasaPedidoCard brasaPedidoProgresso" aria-labelledby="tituloProgresso">
+          <div className="brasaPedidoCardTopo">
+            <div>
+              <span className="brasaPedidoRotulo">DO PEDIDO À RETIRADA</span>
+              <h2 id="tituloProgresso">ACOMPANHE AS ETAPAS</h2>
+            </div>
+          </div>
 
-          <div className="etapasPedido">
+          <ol className="etapasPedido brasaPedidoEtapas">
             {etapas.map((etapa, index) => {
+              const concluida = index < indiceAtual;
+              const atual = index === indiceAtual;
 
               let classeEtapa = "etapaPedido";
 
-              if (index < indiceAtual) {
-                classeEtapa = "etapaPedido etapaConcluida";
+              if (concluida) {
+                classeEtapa += " etapaConcluida";
               }
-
-              if (index === indiceAtual) {
-                classeEtapa = "etapaPedido etapaAtual";
+              else if (atual) {
+                classeEtapa += " etapaAtual";
               }
 
               return (
-                <div key={etapa} className={classeEtapa}>
-                  <span>{index + 1}</span>
-                  <p>{etapa}</p>
-                </div>
-              )
+                <li
+                  key={etapa.nome}
+                  className={classeEtapa}
+                  aria-current={atual ? "step" : undefined}
+                >
+                  <span className="brasaPedidoEtapaIcone" aria-hidden="true">
+                    {concluida ? "✓" : index + 1}
+                  </span>
+
+                  <div className="brasaPedidoEtapaTexto">
+                    <strong>{etapa.nome}</strong>
+                    <p>{etapa.descricao}</p>
+                  </div>
+
+                  {atual && <small className="brasaPedidoEtapaMarcador">AGORA</small>}
+                </li>
+              );
             })}
+          </ol>
+
+          <div className="brasaPedidoInformacao">
+            <strong>{pedidoConcluido ? "Tudo pronto!" : "Como funciona o acompanhamento?"}</strong>
+            <p>
+              {pedidoConcluido
+                ? "Obrigado por pedir com a BRASA 21. Esperamos você novamente!"
+                : "Nesta demonstração, os status são atualizados manualmente pelo painel operacional."}
+            </p>
           </div>
 
-          <h3>Status atual: {pedido.status}</h3>
+          <div className="brasaPedidoPontos">
+            <div>
+              <span className="brasaPedidoRotulo">CLUBE BRASA</span>
+              <strong>{pedidoConcluido ? `+${pedido.pointsToEarn} pontos recebidos` : `+${pedido.pointsToEarn} pontos a receber`}</strong>
+              <p>
+                {pedidoConcluido
+                  ? "Pontos creditados na conclusão do pedido."
+                  : "Os pontos serão creditados quando o pedido for concluído."}
+              </p>
+            </div>
 
-          {pedido.status === "Concluído" && (
-            <p>Pedido concluído. Obrigado pela preferência!</p>
-          )}
+            {pedido.usedPoints > 0 && (
+              <p className="brasaPedidoPontosUsados">{pedido.usedPoints} pontos utilizados neste pedido</p>
+            )}
+          </div>
+        </section>
 
-          {pedido.status === "Concluído" ? (
-            <p>Pontos recebidos: {pedido.pointsToEarn}</p>
-          ) : (
-            <p>Você receberá {pedido.pointsToEarn} pontos após a conclusão do pedido.</p>
-          )}
-
-        </div>
-
-        <div className="pedidoCard">
-
-          <h2>Produtos</h2>
-
-          {pedido.items.map((item) => {
-            return (
-              <div key={item.id} className="itemPedido">
-                <p>{item.product.name} - {item.quantity}x</p>
-                <p>Observação: {item.observation || "Nenhuma"}</p>
+        <div className="brasaPedidoLateral">
+          <section className="pedidoCard brasaPedidoCard" aria-labelledby="tituloProdutosPedido">
+            <div className="brasaPedidoCardTopo">
+              <div>
+                <span className="brasaPedidoRotulo">RESUMO DA COMPRA</span>
+                <h2 id="tituloProdutosPedido">SEUS PRODUTOS</h2>
               </div>
-            )
-          })}
+              <span className="brasaPedidoQuantidade">{quantidadeProdutos} {quantidadeProdutos === 1 ? "item" : "itens"}</span>
+            </div>
 
-          <h2>Total pago</h2>
+            <div className="brasaPedidoProdutos">
+              {pedido.items.map((item) => {
+                return (
+                  <div key={item.id} className="itemPedido brasaPedidoProduto">
+                    <img
+                      src={`/images/produtos/${item.product.id}.png`}
+                      alt={`Imagem ilustrativa de ${item.product.name}`}
+                      loading="lazy"
+                    />
 
-          <p className="produtoPreco">
-            {pedido.total.toLocaleString("pt-BR", {
-              style: "currency",
-              currency: "BRL"
-            })}
-          </p>
+                    <div>
+                      <h3>{item.product.name}</h3>
+                      <p>{item.quantity} {item.quantity === 1 ? "unidade" : "unidades"}</p>
+                      {item.observation.trim() !== "" && (
+                        <p className="brasaPedidoObservacao">Obs.: {item.observation}</p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
 
-          <h2>Retirada</h2>
+            <div className="brasaPedidoPagamento">
+              <div>
+                <span>Pagamento</span>
+                <strong>{pedido.paymentMethod} · Aprovado</strong>
+              </div>
+              <div className="brasaPedidoTotal">
+                <span>Total pago</span>
+                <strong>{formatarPreco(pedido.total)}</strong>
+              </div>
+            </div>
+          </section>
 
-          <p>Unidade {pedido.unit.name}</p>
-          <p>{pedido.unit.address} - {pedido.unit.city}</p>
-
-          {pedido.status !== "Concluído" && (
-            <p>Previsão ilustrativa: 15 a 20 minutos.</p>
-          )}
-
+          <section className="pedidoCard brasaPedidoCard brasaPedidoRetirada" aria-labelledby="tituloRetirada">
+            <span className="brasaPedidoRotulo">ONDE RETIRAR</span>
+            <h2 id="tituloRetirada">BRASA 21 · {pedido.unit.name}</h2>
+            <p>{pedido.unit.address}</p>
+            <p>{pedido.unit.city}</p>
+            <div className="brasaPedidoRetiradaAviso">
+              {pedidoConcluido
+                ? "Retirada concluída. Obrigado pela preferência!"
+                : "Aguarde o status ‘Pronto para retirada’ antes de ir ao balcão."}
+            </div>
+          </section>
         </div>
-
       </div>
 
-      <button onClick={voltarInicio}>Voltar ao início</button>
-
-    </div>
-  )
+      <div className="brasaPedidoRodape">
+        <button type="button" onClick={voltarInicio}>Voltar ao início</button>
+        <p>Este é um ambiente demonstrativo. Nenhum pagamento real foi realizado.</p>
+      </div>
+    </main>
+  );
 }

@@ -1,10 +1,9 @@
 import { useState } from "react";
+import { units } from "../data/units";
+import { products } from "../data/products";
 import type { Unit } from "../types/Unit";
 import type { User } from "../types/User";
 import type { CartItem } from "../types/CartItem";
-import { units } from "../data/units";
-import { products } from "../data/products";
-
 
 type CheckoutProps = {
   unit: Unit;
@@ -14,8 +13,7 @@ type CheckoutProps = {
   voltarCarrinho: () => void;
 };
 
-export function Checkout({unit, usuario, carrinho, confirmarPedido, voltarCarrinho}: CheckoutProps) {
-
+export function Checkout({ unit, usuario, carrinho, confirmarPedido, voltarCarrinho }: CheckoutProps) {
   const [formaPagamento, setFormaPagamento] = useState<string>("");
   const [resultadoSimulado, setResultadoSimulado] = useState<string>("aprovado");
   const [mensagem, setMensagem] = useState<string>("");
@@ -23,20 +21,26 @@ export function Checkout({unit, usuario, carrinho, confirmarPedido, voltarCarrin
 
   const subtotal = carrinho.reduce((acumulador, item) => {
     const preco = item.product.promotionalPrice ?? item.product.price;
+    return acumulador + preco * item.quantity;
+  }, 0);
 
-    const resultado = acumulador + (preco * item.quantity);
-
-    return resultado;
+  const quantidadeProdutos = carrinho.reduce((acumulador, item) => {
+    return acumulador + item.quantity;
   }, 0);
 
   const taxaEmbalagem = carrinho.length > 0 ? 2 : 0;
-
   const desconto = usarPontos && usuario.points >= 100 ? 5 : 0;
-
   const total = Math.max(0, subtotal + taxaEmbalagem - desconto);
+  const pontosGanhos = Math.floor(total);
 
-  
-function pagarPedido() {
+  function formatarPreco(valor: number) {
+    return valor.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL"
+    });
+  }
+
+  function pagarPedido() {
     if (carrinho.length === 0) {
       setMensagem("Seu carrinho está vazio.");
       return;
@@ -54,7 +58,6 @@ function pagarPedido() {
     const mesAtual = new Date().getMonth() + 1;
 
     const produtoIndisponivel = carrinho.find((item) => {
-
       const produtoAtual = products.find((produto) => {
         return produto.id === item.product.id;
       });
@@ -79,23 +82,23 @@ function pagarPedido() {
       return;
     }
 
-    if (!formaPagamento) {
-      setMensagem("Escolha uma forma de pagamento.");
+    if (formaPagamento === "") {
+      setMensagem("Escolha uma forma de pagamento para continuar.");
       return;
     }
 
     if (usarPontos && usuario.points < 100) {
-      setMensagem("Você não possui pontos suficientes.");
+      setMensagem("Você não possui pontos suficientes para utilizar o desconto.");
       return;
     }
 
     if (resultadoSimulado === "negado") {
-      setMensagem("Pagamento negado. Tente novamente.");
+      setMensagem("Pagamento recusado na simulação. Escolha outro resultado e tente novamente.");
       return;
     }
 
     if (resultadoSimulado === "erro") {
-      setMensagem("Erro no serviço de pagamento. Tente novamente.");
+      setMensagem("Falha simulada no serviço de pagamento. Tente novamente.");
       return;
     }
 
@@ -103,145 +106,218 @@ function pagarPedido() {
     confirmarPedido(formaPagamento, total, usarPontos);
   }
 
-  
   return (
-    <div className="paginaFinalizacao">
+    <main className="paginaFinalizacao brasaCheckout">
+      <div className="paginaHeading brasaCheckoutCabecalho">
+        <span className="brasaEtiqueta">BRASA 21 · CHECKOUT</span>
+        <h1>FINALIZE SEU PEDIDO.</h1>
+        <p>Mais um passo e a cozinha começa a preparar seu pedido.</p>
 
-      <div className="paginaHeading">
-        <h1>Finalizar pedido</h1>
-        <p>Confira os produtos antes de confirmar o pagamento.</p>
+        <div className="brasaCheckoutEtapas" aria-label="Etapas da compra">
+          <span className="concluida">✓ Carrinho</span>
+          <span aria-hidden="true">/</span>
+          <span className="atual" aria-current="step">02 Pagamento</span>
+          <span aria-hidden="true">/</span>
+          <span>03 Acompanhar pedido</span>
+        </div>
       </div>
 
-      <div className="finalizacaoLayout">
-
+      <form className="finalizacaoLayout brasaCheckoutLayout" onSubmit={(event) => {
+        event.preventDefault();
+        pagarPedido();
+      }}>
         <div className="finalizacaoPrincipal">
+          <section className="finalizacaoCard brasaCheckoutCard" aria-labelledby="checkoutRetirada">
+            <div className="brasaCheckoutCardTopo">
+              <div>
+                <span className="brasaCheckoutNumero">01 / RETIRADA</span>
+                <h2 id="checkoutRetirada">ONDE RETIRAR</h2>
+              </div>
+              <span className="brasaCheckoutTag">Retirada no balcão</span>
+            </div>
 
-          <div className="finalizacaoCard">
+            <div className="brasaCheckoutUnidade">
+              <span className="brasaCheckoutUnidadeIcone" aria-hidden="true">⌖</span>
+              <div>
+                <strong>BRASA 21 — {unit.name}</strong>
+                <p>{unit.address} · {unit.city}</p>
+              </div>
+            </div>
+          </section>
 
-            <h2>Unidade de retirada</h2>
+          <section className="finalizacaoCard brasaCheckoutCard" aria-labelledby="checkoutProdutos">
+            <div className="brasaCheckoutCardTopo">
+              <div>
+                <span className="brasaCheckoutNumero">02 / SEU PEDIDO</span>
+                <h2 id="checkoutProdutos">CONFIRA OS PRODUTOS</h2>
+              </div>
+              <span className="brasaCheckoutContador">{quantidadeProdutos} {quantidadeProdutos === 1 ? "item" : "itens"}</span>
+            </div>
 
-            <p>Unidade {unit.name}</p>
-            <p>{unit.address} - {unit.city}</p>
+            <div className="brasaCheckoutLista">
+              {carrinho.map((item) => {
+                const preco = item.product.promotionalPrice ?? item.product.price;
 
-            <h2>Resumo dos produtos</h2>
+                return (
+                  <div key={item.id} className="itemFinalizacao brasaCheckoutProduto">
+                    <img
+                      src={`/images/produtos/${item.product.id}.png`}
+                      alt={`Imagem ilustrativa de ${item.product.name}`}
+                    />
+                    <div className="brasaCheckoutProdutoInfo">
+                      <span>{item.product.category}</span>
+                      <h3>{item.product.name}</h3>
+                      <p>{item.quantity} × {formatarPreco(preco)}</p>
+                      {item.observation.trim() !== "" && (
+                        <p className="brasaCheckoutObservacao">Obs.: {item.observation}</p>
+                      )}
+                    </div>
+                    <strong className="brasaCheckoutPrecoItem">{formatarPreco(preco * item.quantity)}</strong>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
 
-            {carrinho.map((item) => {
-              return (
-                <div key={item.id} className="itemFinalizacao">
+          <section className="finalizacaoCard brasaCheckoutCard" aria-labelledby="checkoutFidelidade">
+            <div className="brasaCheckoutCardTopo">
+              <div>
+                <span className="brasaCheckoutNumero">03 / FIDELIDADE</span>
+                <h2 id="checkoutFidelidade">SEUS PONTOS VALEM MAIS</h2>
+              </div>
+              <span className="brasaCheckoutSaldo">{usuario.points} pts</span>
+            </div>
 
-                  <h3>{item.product.name}</h3>
+            <label className={`brasaCheckoutPontos ${usarPontos ? "selecionado" : ""} ${usuario.points < 100 ? "indisponivel" : ""}`}>
+              <input
+                type="checkbox"
+                checked={usarPontos}
+                disabled={usuario.points < 100}
+                onChange={(event) => {
+                  setUsarPontos(event.target.checked);
+                  setMensagem("");
+                }}
+              />
+              <span>
+                <strong>Trocar 100 pontos por R$ 5,00 de desconto</strong>
+                <small>{usuario.points >= 100
+                  ? "Ative esta opção para aplicar o desconto ao pedido."
+                  : `Você tem ${usuario.points} pontos. São necessários 100 para resgatar.`}</small>
+              </span>
+              <span className="brasaCheckoutPontosDesconto">− R$ 5</span>
+            </label>
 
-                  <p>Quantidade: {item.quantity}</p>
+            <p className="brasaCheckoutInfoPontos">Ao concluir o pedido, você receberá {pontosGanhos} {pontosGanhos === 1 ? "ponto" : "pontos"} de fidelidade.</p>
+          </section>
 
-                  <p>Observação: {item.observation || "Nenhuma"}</p>
+          <section className="finalizacaoCard brasaCheckoutCard" aria-labelledby="checkoutPagamento">
+            <div className="brasaCheckoutCardTopo">
+              <div>
+                <span className="brasaCheckoutNumero">04 / PAGAMENTO</span>
+                <h2 id="checkoutPagamento">COMO QUER PAGAR?</h2>
+              </div>
+            </div>
 
-                  <p>{((item.product.promotionalPrice ?? item.product.price) * item.quantity).toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL"
-                  })}</p>
-
-                </div>
-              )
-            })}
-
-          </div>
-
-          <div className="finalizacaoCard">
-
-            <h2>Fidelidade</h2>
-
-            <p>Seus pontos: {usuario.points}</p>
-
-            {usuario.points >= 100 ? (
-              <label>
+            <fieldset className="brasaCheckoutFormasPagamento">
+              <legend>Escolha a forma de pagamento</legend>
+              <label className={`brasaCheckoutPagamentoOpcao ${formaPagamento === "Pix" ? "selecionado" : ""}`}>
                 <input
-                  type="checkbox"
-                  checked={usarPontos}
-                  onChange={(event) => setUsarPontos(event.target.checked)}
+                  type="radio"
+                  name="formaPagamento"
+                  value="Pix"
+                  checked={formaPagamento === "Pix"}
+                  onChange={() => {
+                    setFormaPagamento("Pix");
+                    setMensagem("");
+                  }}
                 />
-                Utilizar 100 pontos para receber R$ 5,00 de desconto.
+                <span>
+                  <strong>Pix</strong>
+                  <small>Pagamento instantâneo (simulado)</small>
+                </span>
               </label>
-            ) : (
-              <p>Você precisa de 100 pontos para utilizar o desconto.</p>
-            )}
 
-          </div>
+              <label className={`brasaCheckoutPagamentoOpcao ${formaPagamento === "Cartão" ? "selecionado" : ""}`}>
+                <input
+                  type="radio"
+                  name="formaPagamento"
+                  value="Cartão"
+                  checked={formaPagamento === "Cartão"}
+                  onChange={() => {
+                    setFormaPagamento("Cartão");
+                    setMensagem("");
+                  }}
+                />
+                <span>
+                  <strong>Cartão</strong>
+                  <small>Pagamento com cartão (simulado)</small>
+                </span>
+              </label>
+            </fieldset>
 
+            <div className="brasaCheckoutSimulacao">
+              <label htmlFor="resultadoPagamento">Resultado do pagamento de teste</label>
+              <select
+                id="resultadoPagamento"
+                value={resultadoSimulado}
+                onChange={(event) => {
+                  setResultadoSimulado(event.target.value);
+                  setMensagem("");
+                }}
+              >
+                <option value="aprovado">Aprovado — pedido confirmado</option>
+                <option value="negado">Recusado — testar pagamento negado</option>
+                <option value="erro">Erro — testar indisponibilidade</option>
+              </select>
+              <p>Ambiente demonstrativo. Não solicitamos dados bancários e nenhuma cobrança será realizada.</p>
+            </div>
+          </section>
         </div>
 
-        <div className="resumoFinalizacao">
+        <aside className="resumoFinalizacao brasaCheckoutResumo" aria-label="Resumo e confirmação da compra">
+          <span className="brasaEtiqueta">ÚLTIMO PASSO</span>
+          <h2>RESUMO DO PEDIDO</h2>
 
-          <h2>Pagamento</h2>
+          <div className="brasaCheckoutResumoLinha">
+            <span>Produtos ({quantidadeProdutos})</span>
+            <strong>{formatarPreco(subtotal)}</strong>
+          </div>
 
-          <p>Forma de pagamento:</p>
-
-          <select
-            value={formaPagamento}
-            onChange={(event) => setFormaPagamento(event.target.value)}
-          >
-            <option value="">Selecione</option>
-            <option value="Pix">Pix</option>
-            <option value="Cartão">Cartão</option>
-          </select>
-
-          <p>Resultado do pagamento (simulação):</p>
-
-          <select
-            value={resultadoSimulado}
-            onChange={(event) => {
-              setResultadoSimulado(event.target.value);
-              setMensagem("");
-            }}
-          >
-            <option value="aprovado">Aprovado</option>
-            <option value="negado">Negado</option>
-            <option value="erro">Erro no serviço</option>
-          </select>
-
-          <p>Os pagamentos são simulados. Nenhuma cobrança será realizada.</p>
-
-          <h2>Valores</h2>
-
-          <p>Subtotal: {subtotal.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL"
-          })}</p>
-
-          <p>Taxa de embalagem: {taxaEmbalagem.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL"
-          })}</p>
+          <div className="brasaCheckoutResumoLinha">
+            <span>Taxa de embalagem</span>
+            <strong>{formatarPreco(taxaEmbalagem)}</strong>
+          </div>
 
           {desconto > 0 && (
-            <p>Desconto de fidelidade: -{desconto.toLocaleString("pt-BR", {
-              style: "currency",
-              currency: "BRL"
-            })}</p>
+            <div className="brasaCheckoutResumoLinha desconto">
+              <span>Desconto de fidelidade</span>
+              <strong>− {formatarPreco(desconto)}</strong>
+            </div>
           )}
 
-          <h2>Total: {total.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL"
-          })}</h2>
+          <div className="brasaCheckoutResumoTotal">
+            <span>Total</span>
+            <strong>{formatarPreco(total)}</strong>
+          </div>
+
+          <p className="brasaCheckoutResumoNota">Pedido para retirada na unidade {unit.name}.</p>
 
           {mensagem !== "" && (
-            <p role="alert">{mensagem}</p>
+            <p className="brasaCheckoutErro" role="alert">{mensagem}</p>
           )}
 
-          <div className="acoesFinalizacao">
-            <button onClick={pagarPedido}>
-              Pagar e confirmar pedido
+          <div className="acoesFinalizacao brasaCheckoutAcoes">
+            <button type="submit" disabled={carrinho.length === 0}>
+              Confirmar pedido →
             </button>
-
-            <button onClick={voltarCarrinho}>
-              Voltar ao carrinho
+            <button type="button" onClick={voltarCarrinho}>
+              ← Voltar ao carrinho
             </button>
           </div>
 
-        </div>
-
-      </div>
-    </div>
-  )
-
+          <p className="brasaCheckoutRodape">Pagamento 100% simulado · Nenhuma cobrança real</p>
+        </aside>
+      </form>
+    </main>
+  );
 }

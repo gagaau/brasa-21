@@ -9,251 +9,202 @@ type AuthProps = {
 };
 
 export function Auth({usuarios, atualizarUsuarios, entrar, continuarSemLogin}: AuthProps) {
-
-  const [email, setEmail] = useState<string>("");
-  const [senha, setSenha] = useState<string>("");
-
   const [nome, setNome] = useState<string>("");
-  const [emailCadastro, setEmailCadastro] = useState<string>("");
-  const [senhaCadastro, setSenhaCadastro] = useState<string>("");
-  const [confirmarSenha, setConfirmarSenha] = useState<string>("");
-
-  const [aceitouTermos, setAceitouTermos] = useState<boolean>(false);
+  const [aceitouAviso, setAceitouAviso] = useState<boolean>(false);
   const [receberPromocoes, setReceberPromocoes] = useState<boolean>(false);
-
   const [erroLogin, setErroLogin] = useState<string>("");
   const [erroCadastro, setErroCadastro] = useState<string>("");
 
-  function fazerLogin() {
+  const contaDemonstracao = usuarios.find((usuario) => usuario.id === 1) ?? usuarios[0];
 
-    if (!email.trim() || !senha) {
-      setErroLogin("Preencha o e-mail e a senha.");
-      return;
-    }
-
-    const emailFormatado = email.trim().toLowerCase();
-
-    const usuarioEncontrado = usuarios.find((usuario) => {
-      return usuario.email === emailFormatado && usuario.password === senha;
-    });
-
-    if (!usuarioEncontrado) {
-      setErroLogin("E-mail ou senha incorretos.");
+  function entrarComContaDemonstracao() {
+    if (contaDemonstracao === undefined) {
+      setErroLogin("A conta de demonstração não está disponível.");
       return;
     }
 
     setErroLogin("");
-    entrar(usuarioEncontrado);
+    entrar(contaDemonstracao);
   }
 
-  function fazerCadastro() {
-
-    if (!nome.trim() || !emailCadastro.trim() || !senhaCadastro || !confirmarSenha) {
-      setErroCadastro("Preencha todos os campos obrigatórios.");
+  function criarPerfilDemonstrativo() {
+    if (nome.trim().length < 2) {
+      setErroCadastro("Informe um nome de exibição com pelo menos 2 caracteres.");
       return;
     }
 
-    if (senhaCadastro.length < 6) {
-      setErroCadastro("A senha precisa ter pelo menos 6 caracteres.");
-      return;
-    }
-
-    if (senhaCadastro !== confirmarSenha) {
-      setErroCadastro("As senhas não são iguais.");
-      return;
-    }
-
-    if (!aceitouTermos) {
-      setErroCadastro("Você precisa aceitar os termos e a política de privacidade.");
-      return;
-    }
-
-    const emailFormatado = emailCadastro.trim().toLowerCase();
-
-    const emailExistente = usuarios.some((usuario) => {
-      return usuario.email === emailFormatado;
-    });
-
-    if (emailExistente) {
-      setErroCadastro("Este e-mail já está cadastrado.");
+    if (!aceitouAviso) {
+      setErroCadastro("Confirme que entendeu como funciona o perfil demonstrativo.");
       return;
     }
 
     const maiorId = usuarios.reduce((acumulador, usuario) => {
-      if (usuario.id > acumulador) {
-        return usuario.id;
-      }
-
-      return acumulador;
+      return usuario.id > acumulador ? usuario.id : acumulador;
     }, 0);
 
+    const novoId = maiorId + 1;
+
     const novoUsuario: User = {
-      id: maiorId + 1,
+      id: novoId,
       name: nome.trim(),
-      email: emailFormatado,
-      password: senhaCadastro,
+      email: `cliente-${novoId}@demo.brasa21.invalid`,
       acceptedTerms: true,
       receivePromotions: receberPromocoes,
       points: 0
     };
 
     atualizarUsuarios([...usuarios, novoUsuario]);
-
     setErroCadastro("");
     entrar(novoUsuario);
   }
 
   return (
-    <div className="paginaAuth">
+    <main className="paginaAuth brasaAuth">
+      <section className="brasaAuthApresentacao" aria-labelledby="tituloAuth">
+        <img
+          src="/images/hero-brasa21.png"
+          alt=""
+          className="brasaAuthImagem"
+          aria-hidden="true"
+        />
 
-      <h1>Raízes do Nordeste</h1>
-      <p className="textoAuth">Entre na sua conta ou faça seu cadastro para realizar pedidos.</p>
+        <div className="brasaAuthApresentacaoConteudo">
+          <span className="brasaAuthEtiqueta">BRASA 21 · BURGER HOUSE</span>
+          <h1 id="tituloAuth">SUA FOME.<br /><span>SEU PEDIDO.</span></h1>
+          <p>
+            Monte seu pedido, acompanhe o preparo e descubra as vantagens
+            do nosso programa de fidelidade.
+          </p>
 
-      <div className="authLayout">
+          <div className="brasaAuthDestaques">
+            <span>Pedidos para retirada</span>
+            <span>Pontos a cada compra</span>
+            <span>Experiência demonstrativa</span>
+          </div>
+        </div>
+      </section>
 
-        <div className="authCard">
-
-          <h2>Entrar</h2>
-
-          <form onSubmit={(event) => {
-            event.preventDefault();
-            fazerLogin();
-          }}>
-
-            <p>E-mail:</p>
-            <input
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="Seu e-mail"
-            />
-
-            <p>Senha:</p>
-            <input
-              type="password"
-              value={senha}
-              onChange={(event) => setSenha(event.target.value)}
-              placeholder="Sua senha"
-            />
-
-            {erroLogin !== "" && (
-              <p className="avisoAuth" role="alert">{erroLogin}</p>
-            )}
-
-            <button type="submit">Entrar</button>
-
-          </form>
-
-          <button onClick={() => setErroLogin("A recuperação de senha não está disponível nesta simulação.")}>
-            Esqueci minha senha
-          </button>
-
-          <p className="contaTeste">Conta de teste:</p>
-          <p>maria@email.com / 123456</p>
-
+      <section className="brasaAuthConteudo" aria-labelledby="subtituloAuth">
+        <div className="brasaAuthTopo">
+          <span className="brasaAuthEtiqueta">BEM-VINDO AO BRASA 21</span>
+          <h2 id="subtituloAuth">Escolha como experimentar</h2>
+          <p>
+            Este é um projeto de demonstração. Não é necessário criar uma conta
+            real nem informar senha ou dados pessoais.
+          </p>
         </div>
 
-        <div className="authCard">
+        <div className="authCard brasaAuthCard">
+          <div className="brasaAuthCardCabecalho">
+            <span className="brasaAuthNumero">01 / ACESSO RÁPIDO</span>
+            <span className="brasaAuthSelo">RECOMENDADO</span>
+          </div>
 
-          <h2>Criar conta</h2>
+          <h3>Entrar com conta de teste</h3>
+          <p>
+            Explore o cardápio, finalize pedidos e teste o desconto de fidelidade
+            com um perfil que já possui pontos.
+          </p>
+
+          {contaDemonstracao !== undefined && (
+            <div className="brasaAuthContaTeste">
+              <div className="brasaAuthAvatar" aria-hidden="true">
+                {contaDemonstracao.name.charAt(0).toUpperCase()}
+              </div>
+              <div>
+                <strong>{contaDemonstracao.name}</strong>
+                <span>{contaDemonstracao.points} pontos disponíveis</span>
+              </div>
+            </div>
+          )}
+
+          {erroLogin !== "" && (
+            <p className="brasaAuthErro" role="alert">{erroLogin}</p>
+          )}
+
+          <button
+            type="button"
+            className="brasaAuthBotao"
+            onClick={entrarComContaDemonstracao}
+          >
+            Entrar na demonstração
+          </button>
+        </div>
+
+        <div className="brasaAuthSeparador"><span>OU</span></div>
+
+        <div className="authCard brasaAuthCard">
+          <span className="brasaAuthNumero">02 / NOVO PERFIL</span>
+          <h3>Criar perfil de teste</h3>
+          <p>
+            Prefere começar do zero? Escolha um apelido e receba um perfil
+            demonstrativo com zero pontos.
+          </p>
 
           <form onSubmit={(event) => {
             event.preventDefault();
-            fazerCadastro();
+            criarPerfilDemonstrativo();
           }}>
-
-            <p>Nome:</p>
-            <input
-              value={nome}
-              onChange={(event) => setNome(event.target.value)}
-              placeholder="Seu nome"
-            />
-
-            <p>E-mail:</p>
-            <input
-              type="email"
-              value={emailCadastro}
-              onChange={(event) => setEmailCadastro(event.target.value)}
-              placeholder="Seu e-mail"
-            />
-
-            <p>Senha:</p>
-            <input
-              type="password"
-              value={senhaCadastro}
-              onChange={(event) => setSenhaCadastro(event.target.value)}
-              placeholder="Crie uma senha"
-            />
-
-            <p>Confirmar senha:</p>
-            <input
-              type="password"
-              value={confirmarSenha}
-              onChange={(event) => setConfirmarSenha(event.target.value)}
-              placeholder="Confirme sua senha"
-            />
-
-            <details>
-              <summary>Termos e política de privacidade</summary>
-
-              <p>
-                Este projeto é uma simulação acadêmica.
-                Os dados informados são utilizados apenas
-                para demonstrar o funcionamento do cadastro,
-                login e programa de fidelidade.
-              </p>
-
-              <p>
-                Os dados permanecem apenas na memória da
-                aplicação durante o uso e não são enviados
-                para um servidor. Não utilize senhas reais.
-              </p>
-
-              <p>
-                A opção de receber promoções é voluntária
-                e pode ser alterada posteriormente no perfil.
-                Nenhum e-mail promocional é realmente enviado.
-              </p>
-            </details>
-
-            <label>
-              <input
-                type="checkbox"
-                checked={aceitouTermos}
-                onChange={(event) => setAceitouTermos(event.target.checked)}
-              />
-              Li e concordo com os termos e a política de privacidade.
+            <label className="brasaAuthLabel" htmlFor="nomeDemonstrativo">
+              Nome de exibição
             </label>
+            <input
+              id="nomeDemonstrativo"
+              type="text"
+              value={nome}
+              onChange={(event) => {
+                setNome(event.target.value);
+                setErroCadastro("");
+              }}
+              placeholder="Ex.: Cliente Brasa"
+              maxLength={40}
+              autoComplete="off"
+              required
+            />
 
-            <label>
+            <label className="brasaAuthCheckbox">
               <input
                 type="checkbox"
                 checked={receberPromocoes}
                 onChange={(event) => setReceberPromocoes(event.target.checked)}
               />
-              Desejo receber promoções personalizadas por e-mail.
+              <span>Ativar preferência de promoções (apenas simulação).</span>
+            </label>
+
+            <label className="brasaAuthCheckbox">
+              <input
+                type="checkbox"
+                checked={aceitouAviso}
+                onChange={(event) => {
+                  setAceitouAviso(event.target.checked);
+                  setErroCadastro("");
+                }}
+              />
+              <span>Entendi que o perfil é demonstrativo e não devo informar dados reais.</span>
             </label>
 
             {erroCadastro !== "" && (
-              <p className="avisoAuth" role="alert">{erroCadastro}</p>
+              <p className="brasaAuthErro" role="alert">{erroCadastro}</p>
             )}
 
-            <button type="submit">Criar conta</button>
-
+            <button type="submit" className="brasaAuthBotao brasaAuthBotaoSecundario">
+              Criar meu perfil de teste
+            </button>
           </form>
-
         </div>
 
-      </div>
+        <div className="continuarVisitante brasaAuthRodape">
+          <p>Quer apenas conhecer os produtos?</p>
+          <button type="button" onClick={continuarSemLogin}>
+            Voltar ao cardápio sem entrar
+          </button>
+        </div>
 
-      <div className="continuarVisitante">
-        <p>Deseja apenas consultar o cardápio?</p>
-
-        <button onClick={continuarSemLogin}>
-          Continuar sem login
-        </button>
-      </div>
-
-    </div>
-  )
+        <p className="brasaAuthNota">
+          Os dados demonstrativos ficam salvos apenas neste navegador, inclusive
+          depois de atualizar a página. Não informe dados reais. Nenhum pagamento é processado.
+        </p>
+      </section>
+    </main>
+  );
 }

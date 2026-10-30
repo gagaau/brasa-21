@@ -4,8 +4,7 @@ export const users: User[] = [
   {
     id: 1,
     name: "Maria Silva",
-    email: "maria@email.com",
-    password: "123456",
+    email: "maria@demo.brasa21.invalid",
     acceptedTerms: true,
     receivePromotions: false,
     points: 120

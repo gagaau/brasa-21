@@ -15,104 +15,82 @@ type TotemProps = {
   encerrarAtendimento: () => void;
 };
 
-
-
-export function Totem({usuarios, salvarUsuario, registrarPedido, encerrarAtendimento}: TotemProps) {
-
+export function Totem({ usuarios, salvarUsuario, registrarPedido, encerrarAtendimento }: TotemProps) {
   const unidadeTotem = units.find((unidade) => unidade.id === 1);
-  const [telaTotem, setTelaTotem] = useState<"menu" | "carrinho" | "login" | "finalizacao" | "pedido">("menu");
+  const contaDemonstracao = usuarios.find((usuario) => usuario.id === 1) ?? usuarios[0];
+
+  const [telaTotem, setTelaTotem] = useState<"menu" | "carrinho" | "identificacao" | "finalizacao" | "pedido">("menu");
   const [carrinho, setCarrinho] = useState<CartItem[]>([]);
   const [usuarioTotem, setUsuarioTotem] = useState<User | null>(null);
   const [pedidoTotem, setPedidoTotem] = useState<Order | null>(null);
+  const [mensagem, setMensagem] = useState<string>("");
 
-  const [email, setEmail] = useState<string>("");
-  const [senha, setSenha] = useState<string>("");
-  const [erroLogin, setErroLogin] = useState<string>("");
+  const totalQuantidade = carrinho.reduce((total, item) => total + item.quantity, 0);
 
-  const totalQuantidade = carrinho.reduce((acumulador, item) => {
-    return acumulador + item.quantity;
-  }, 0);
-
-  const subtotal = carrinho.reduce((acumulador, item) => {
+  const subtotal = carrinho.reduce((total, item) => {
     const preco = item.product.promotionalPrice ?? item.product.price;
-
-    const resultado = acumulador + (preco * item.quantity);
-
-    return resultado;
+    return total + preco * item.quantity;
   }, 0);
 
   const taxaEmbalagem = carrinho.length > 0 ? 2 : 0;
-
   const total = subtotal + taxaEmbalagem;
+
+  function formatarPreco(valor: number) {
+    return valor.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL"
+    });
+  }
 
   function adicionarItem(novoItem: CartItem) {
     setCarrinho(carrinhoAtual => [...carrinhoAtual, novoItem]);
   }
 
   function alterarQuantidade(id: string, quantidade: number) {
-
     if (quantidade < 1) {
       return;
     }
 
-    const resultado = carrinho.map((item) => {
+    setCarrinho(carrinhoAtual => carrinhoAtual.map((item) => {
       if (item.id === id) {
-        return {...item, quantity: quantidade};
+        return { ...item, quantity: quantidade };
       }
 
       return item;
-    });
-
-    setCarrinho(resultado);
+    }));
   }
 
   function removerItem(id: string) {
-    const resultado = carrinho.filter((item) => item.id !== id);
-
-    setCarrinho(resultado);
+    setCarrinho(carrinhoAtual => carrinhoAtual.filter((item) => item.id !== id));
   }
 
   function finalizarCompra() {
-
     if (carrinho.length === 0) {
       return;
     }
 
+    setMensagem("");
+
     if (usuarioTotem === null) {
-      setTelaTotem("login");
+      setTelaTotem("identificacao");
       return;
     }
 
     setTelaTotem("finalizacao");
   }
 
-  function fazerLogin() {
-
-    if (!email.trim() || !senha) {
-      setErroLogin("Preencha o e-mail e a senha.");
+  function continuarComContaDeTeste() {
+    if (contaDemonstracao === undefined) {
+      setMensagem("A conta de demonstração não está disponível.");
       return;
     }
 
-    const emailFormatado = email.trim().toLowerCase();
-
-    const usuarioEncontrado = usuarios.find((usuario) => {
-      return usuario.email === emailFormatado && usuario.password === senha;
-    });
-
-    if (!usuarioEncontrado) {
-      setErroLogin("E-mail ou senha incorretos.");
-      return;
-    }
-
-    setUsuarioTotem(usuarioEncontrado);
-    setEmail("");
-    setSenha("");
-    setErroLogin("");
+    setUsuarioTotem(contaDemonstracao);
+    setMensagem("");
     setTelaTotem("finalizacao");
   }
 
   function confirmarPedido(formaPagamento: string, totalPago: number, usarPontos: boolean) {
-
     if (usuarioTotem === null || unidadeTotem === undefined || carrinho.length === 0) {
       return;
     }
@@ -123,7 +101,6 @@ export function Totem({usuarios, salvarUsuario, registrarPedido, encerrarAtendim
 
     const pontosUtilizados = usarPontos ? 100 : 0;
 
-    
     const novoPedido: Order = {
       id: Date.now(),
       userId: usuarioTotem.id,
@@ -135,7 +112,6 @@ export function Totem({usuarios, salvarUsuario, registrarPedido, encerrarAtendim
       pointsToEarn: Math.floor(totalPago),
       status: "Recebido"
     };
-
 
     if (pontosUtilizados > 0) {
       const usuarioAtualizado = {
@@ -155,7 +131,7 @@ export function Totem({usuarios, salvarUsuario, registrarPedido, encerrarAtendim
 
   function encerrar() {
     if (carrinho.length > 0) {
-      const confirmou = window.confirm("Encerrar atendimento? Os produtos do carrinho serão removidos.");
+      const confirmou = window.confirm("Encerrar o atendimento? Os produtos do carrinho serão removidos.");
 
       if (!confirmou) {
         return;
@@ -165,31 +141,63 @@ export function Totem({usuarios, salvarUsuario, registrarPedido, encerrarAtendim
     setUsuarioTotem(null);
     setCarrinho([]);
     setPedidoTotem(null);
-    setEmail("");
-    setSenha("");
-
     encerrarAtendimento();
   }
 
-  if (unidadeTotem === undefined) {
-    return <p>Unidade Centro não encontrada.</p>;
+  if (unidadeTotem === undefined || !unidadeTotem.isOpen) {
+    return (
+      <div className="paginaTotem brasaTotem">
+        <div className="brasaTotemAviso">
+          <h1>Totem indisponível</h1>
+          <p>A unidade Centro não está disponível para atendimento neste momento.</p>
+          <button onClick={encerrarAtendimento}>Voltar ao início</button>
+        </div>
+      </div>
+    );
   }
 
-  return (
-    <div className="paginaTotem">
+  const etapas = [
+    { id: "menu", nome: "Cardápio" },
+    { id: "carrinho", nome: "Carrinho" },
+    { id: "identificacao", nome: "Identificação" },
+    { id: "finalizacao", nome: "Pagamento" },
+    { id: "pedido", nome: "Pedido" }
+  ];
 
-      <div className="topoTotem">
-        <div>
-          <h1>Raízes do Nordeste</h1>
-          <p>Totem de autoatendimento - Unidade {unidadeTotem.name}</p>
+  const indiceAtual = etapas.findIndex((etapa) => etapa.id === telaTotem);
+
+  return (
+    <div className="paginaTotem brasaTotem">
+      <header className="topoTotem brasaTotemTopo">
+        <div className="brasaTotemMarca">
+          <img src="/images/logo-brasa21.png" alt="BRASA 21" />
+          <div>
+            <span className="brasaEtiqueta">PEDIU. PAGOU. PARTIU.</span>
+            <h1>AUTOATENDIMENTO</h1>
+            <p>Unidade {unidadeTotem.name} · Retirada no balcão</p>
+          </div>
         </div>
 
-        <button onClick={encerrar}>Encerrar atendimento</button>
-      </div>
+        <button type="button" className="brasaTotemSair" onClick={encerrar}>
+          Encerrar atendimento
+        </button>
+      </header>
+
+      <nav className="brasaTotemEtapas" aria-label="Etapas do autoatendimento">
+        {etapas.map((etapa, index) => (
+          <span
+            key={etapa.id}
+            className={index === indiceAtual ? "atual" : index < indiceAtual ? "concluida" : ""}
+            aria-current={index === indiceAtual ? "step" : undefined}
+          >
+            <span className="brasaTotemEtapaNumero">{index < indiceAtual ? "✓" : index + 1}</span>
+            {etapa.nome}
+          </span>
+        ))}
+      </nav>
 
       {telaTotem === "menu" && (
-        <div className="totemLayout">
-
+        <div className="totemLayout brasaTotemLayout">
           <Menu
             unit={unidadeTotem}
             carrinho={carrinho}
@@ -197,82 +205,92 @@ export function Totem({usuarios, salvarUsuario, registrarPedido, encerrarAtendim
             abrirCarrinho={() => setTelaTotem("carrinho")}
           />
 
-          <div className="carrinhoTotem">
-
-            <h2>Meu carrinho</h2>
-
-            <p>Quantidade total: {totalQuantidade}</p>
-
-            {carrinho.length === 0 && (
-              <p>Nenhum produto adicionado.</p>
-            )}
-
-            {carrinho.map((item) => {
-              return (
-                <div key={item.id} className="itemTotem">
-
-                  <h3>{item.product.name}</h3>
-
-                  <p>Quantidade: {item.quantity}</p>
-
-                  <div className="botoesTotem">
-                    <button
-                      onClick={() => alterarQuantidade(item.id, item.quantity - 1)}
-                      disabled={item.quantity === 1}
-                    >
-                      -
-                    </button>
-
-                    <button onClick={() => alterarQuantidade(item.id, item.quantity + 1)}>
-                      +
-                    </button>
-
-                    <button onClick={() => removerItem(item.id)}>
-                      Remover
-                    </button>
-                  </div>
-
-                  <p>{((item.product.promotionalPrice ?? item.product.price) * item.quantity).toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL"
-                  })}</p>
-
-                </div>
-              )
-            })}
-
-            <div className="totalTotem">
-              <p>Subtotal: {subtotal.toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL"
-              })}</p>
-
-              <p>Taxa de embalagem: {taxaEmbalagem.toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL"
-              })}</p>
-
-              <h2>Total: {total.toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL"
-              })}</h2>
+          <aside className="carrinhoTotem brasaTotemCarrinho" aria-label="Resumo do carrinho">
+            <div className="brasaTotemCarrinhoTopo">
+              <div>
+                <span className="brasaEtiqueta">SEU PEDIDO</span>
+                <h2>MEU CARRINHO</h2>
+              </div>
+              <span className="brasaTotemQuantidade">{totalQuantidade}</span>
             </div>
 
-            <button
-              onClick={() => setTelaTotem("carrinho")}
-              disabled={carrinho.length === 0}
-            >
-              Editar carrinho
-            </button>
+            {carrinho.length === 0 ? (
+              <div className="brasaTotemVazio">
+                <span aria-hidden="true">🍔</span>
+                <strong>Escolha o primeiro favorito.</strong>
+                <p>Os produtos adicionados aparecerão aqui.</p>
+              </div>
+            ) : (
+              <div className="brasaTotemLista">
+                {carrinho.map((item) => (
+                  <div key={item.id} className="itemTotem brasaTotemItem">
+                    <img
+                      src={`/images/produtos/${item.product.id}.png`}
+                      alt={`Imagem ilustrativa de ${item.product.name}`}
+                      loading="lazy"
+                    />
 
-            <button
-              onClick={finalizarCompra}
-              disabled={carrinho.length === 0}
-            >
-              Continuar para finalização
-            </button>
+                    <div className="brasaTotemItemConteudo">
+                      <h3>{item.product.name}</h3>
+                      <strong>{formatarPreco((item.product.promotionalPrice ?? item.product.price) * item.quantity)}</strong>
+                      {item.observation.trim() !== "" && <p>Obs.: {item.observation}</p>}
 
-          </div>
+                      <div className="botoesTotem brasaTotemControles">
+                        <button
+                          type="button"
+                          onClick={() => alterarQuantidade(item.id, item.quantity - 1)}
+                          disabled={item.quantity === 1}
+                          aria-label={`Diminuir quantidade de ${item.product.name}`}
+                        >
+                          −
+                        </button>
+                        <span aria-label={`Quantidade: ${item.quantity}`}>{item.quantity}</span>
+                        <button
+                          type="button"
+                          onClick={() => alterarQuantidade(item.id, item.quantity + 1)}
+                          aria-label={`Aumentar quantidade de ${item.product.name}`}
+                        >
+                          +
+                        </button>
+                        <button
+                          type="button"
+                          className="brasaTotemRemover"
+                          onClick={() => removerItem(item.id)}
+                        >
+                          Remover
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="totalTotem brasaTotemTotais">
+              <div><span>Subtotal</span><strong>{formatarPreco(subtotal)}</strong></div>
+              <div><span>Embalagem</span><strong>{formatarPreco(taxaEmbalagem)}</strong></div>
+              <div className="brasaTotemTotal"><span>Total</span><strong>{formatarPreco(total)}</strong></div>
+            </div>
+
+            <div className="brasaTotemAcoes">
+              <button
+                type="button"
+                className="brasaTotemPrincipal"
+                onClick={finalizarCompra}
+                disabled={carrinho.length === 0}
+              >
+                Continuar pedido →
+              </button>
+              <button
+                type="button"
+                className="brasaTotemSecundario"
+                onClick={() => setTelaTotem("carrinho")}
+                disabled={carrinho.length === 0}
+              >
+                Editar carrinho
+              </button>
+            </div>
+          </aside>
         </div>
       )}
 
@@ -286,54 +304,37 @@ export function Totem({usuarios, salvarUsuario, registrarPedido, encerrarAtendim
         />
       )}
 
-      {telaTotem === "login" && (
-        <div className="loginTotem">
+      {telaTotem === "identificacao" && (
+        <section className="loginTotem brasaTotemIdentificacao">
+          <span className="brasaEtiqueta">QUASE LÁ</span>
+          <h2>CONTINUE SEM SENHA.</h2>
+          <p>
+            Para experimentar o pagamento e o clube de fidelidade, vamos usar uma
+            conta fictícia. Não é necessário informar dados pessoais.
+          </p>
 
-          <h2>Identificação do cliente</h2>
+          {contaDemonstracao !== undefined && (
+            <div className="brasaTotemConta">
+              <span className="brasaTotemAvatar" aria-hidden="true">
+                {contaDemonstracao.name.charAt(0).toUpperCase()}
+              </span>
+              <div>
+                <strong>{contaDemonstracao.name}</strong>
+                <p>Perfil de teste · {contaDemonstracao.points} pontos</p>
+              </div>
+            </div>
+          )}
 
-          <p>Faça login para finalizar seu pedido.</p>
+          {mensagem !== "" && <p className="brasaTotemErro" role="alert">{mensagem}</p>}
 
-          <form onSubmit={(event) => {
-            event.preventDefault();
-            fazerLogin();
-          }}>
-
-            <p>E-mail:</p>
-
-            <input
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="Seu e-mail"
-            />
-
-            <p>Senha:</p>
-
-            <input
-              type="password"
-              value={senha}
-              onChange={(event) => setSenha(event.target.value)}
-              placeholder="Sua senha"
-            />
-
-            {erroLogin !== "" && (
-              <p role="alert">{erroLogin}</p>
-            )}
-
-            <button type="submit">Entrar</button>
-
-          </form>
-
-          <p>Conta de demonstração: maria@email.com / 123456</p>
-
-          <button onClick={() => {
-            setErroLogin("");
-            setTelaTotem("menu");
-          }}>
-            Voltar ao cardápio
+          <button type="button" className="brasaTotemPrincipal" onClick={continuarComContaDeTeste}>
+            Continuar com perfil de teste →
           </button>
-
-        </div>
+          <button type="button" className="brasaTotemSecundario" onClick={() => setTelaTotem("carrinho")}>
+            ← Voltar ao carrinho
+          </button>
+          <small>Pagamento simulado. Nenhuma cobrança será feita.</small>
+        </section>
       )}
 
       {telaTotem === "finalizacao" && usuarioTotem !== null && (
@@ -347,12 +348,12 @@ export function Totem({usuarios, salvarUsuario, registrarPedido, encerrarAtendim
       )}
 
       {telaTotem === "pedido" && pedidoTotem !== null && (
-        <OrderTracking
-          pedido={pedidoTotem}
-          voltarInicio={encerrar}
-        />
+        <OrderTracking pedido={pedidoTotem} voltarInicio={encerrar} />
       )}
 
+      <p className="brasaTotemNota">
+        BRASA 21 é um projeto demonstrativo. Pedidos e pagamentos não são reais.
+      </p>
     </div>
-  )
+  );
 }

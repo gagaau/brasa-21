@@ -1,75 +1,84 @@
-# React + TypeScript + Vite
+# BRASA 21 🍔
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação demonstrativa de pedidos para uma hamburgueria, desenvolvida com **React, TypeScript e Vite**. O projeto reúne cardápio digital, carrinho, finalização de pedidos, programa de fidelidade, totem de autoatendimento e painel operacional de cozinha.
 
-Currently, two official plugins are available:
+A proposta é simular diferentes etapas da experiência de um restaurante em uma interface responsiva, com identidade visual urbana e navegação adaptada ao cliente e à operação.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+![Banner do BRASA 21](./public/images/hero-brasa21.png)
 
-## React Compiler
+## Funcionalidades
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Experiência do cliente
 
-## Expanding the ESLint configuration
+- Seleção de unidade e consulta à disponibilidade dos produtos.
+- Cardápio com fotos, pesquisa, categorias, detalhes e ofertas.
+- Carrinho com controle de quantidade, observações e cálculo dos valores.
+- Checkout com simulação de pagamento via Pix ou cartão, incluindo cenários de aprovação, recusa e erro.
+- Acompanhamento do pedido pelos status **Recebido**, **Em preparação**, **Pronto para retirada** e **Concluído**.
+- Perfil demonstrativo com programa de fidelidade: acúmulo de pontos e troca de **100 pontos por R$ 5,00 de desconto**.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Autoatendimento e operação
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Totem:** fluxo de pedido adaptado para interação por toque, com carrinho e finalização.
+- **Painel operacional:** visualização da comanda e avanço manual das etapas de preparo.
+- Visualização das unidades e de seus produtos disponíveis.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Persistência e interface
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Armazenamento local de carrinho, unidade selecionada, perfis demonstrativos, pontos e último pedido com `localStorage`.
+- Opção para reiniciar os dados da demonstração.
+- Layout responsivo e identidade visual própria.
 
+## Tecnologias
+
+- React 19
+- TypeScript
+- Vite
+- CSS
+- `localStorage`
+- ESLint
+
+## Como executar localmente
+
+É necessário ter **Node.js e npm** instalados.
+
+```bash
+git clone https://github.com/gagaau/brasa-21.git
+cd brasa-21
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+Abra no navegador o endereço local informado pelo Vite.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Para verificar a aplicação antes da publicação:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm run lint
+npm run build
+npm run preview
 ```
+
+## Como explorar a demonstração
+
+1. Escolha uma unidade e adicione produtos ao carrinho.
+2. Entre com um perfil demonstrativo ou crie um perfil local.
+3. Finalize o pedido usando uma das opções de pagamento simulado.
+4. Acesse o painel operacional e avance os status da comanda.
+5. Consulte o acompanhamento do pedido e o saldo de pontos de fidelidade.
+
+Você também pode experimentar o fluxo do **totem de autoatendimento** a partir da tela inicial.
+
+## Sobre a simulação
+
+Este é um projeto de portfólio, **não um serviço comercial ativo**.
+
+- Os pagamentos são simulados; nenhuma cobrança é realizada.
+- Os perfis são demonstrativos e não possuem autenticação real.
+- Os dados ficam salvos apenas no navegador utilizado, por meio do `localStorage`; não existe sincronização entre dispositivos ou banco de dados remoto.
+- O painel operacional controla um pedido ativo por vez e os status são atualizados manualmente.
+- Não são enviados e-mails promocionais.
+
+## Repositório
+
+[GitHub — BRASA 21](https://github.com/gagaau/brasa-21)

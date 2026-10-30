@@ -1,7 +1,19 @@
 :root {
   font-family: Arial, Helvetica, sans-serif;
-  color: #222;
-  background-color: #f3f3f3;
+  color: #f5f3ef;
+  background-color: #101114;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+
+  --bg: #101114;
+  --surface: #1b1d21;
+  --surface-alt: #24262b;
+  --border: #35373d;
+  --text: #f5f3ef;
+  --muted: #aba9a5;
+  --orange: #ff6a00;
+  --orange-hover: #e85e00;
 }
 
 * {
@@ -11,6 +23,20 @@
 body {
   margin: 0;
   min-width: 320px;
+  background: var(--bg);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 3px;
+}
+
+a {
+  color: var(--orange);
 }
 
 button, input, textarea, select {
@@ -18,16 +44,18 @@ button, input, textarea, select {
 }
 
 button {
-  background-color: white;
-  color: #222;
-  border: 1px solid #999;
-  border-radius: 6px;
-  padding: 10px 14px;
-  cursor: pointer
+  background-color: var(--surface-alt);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
 }
 
 button:hover:not(:disabled) {
-  background-color: #e9e9e9;
+  background-color: #32343b;
+  border-color: #626269;
 }
 
 button:disabled {
@@ -37,11 +65,15 @@ button:disabled {
 
 input:not([type="checkbox"]), textarea, select {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #bbb;
-  border-radius: 6px;
-  background-color: white;
-  color: #222;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: #15171b;
+  color: var(--text);
+}
+
+input::placeholder, textarea::placeholder {
+  color: #85858b;
 }
 
 textarea {
@@ -55,6 +87,11 @@ input[type="checkbox"] {
 
 h1, h2, h3 {
   margin-top: 0;
+  line-height: 1.15;
+}
+
+h1, h2 {
+  letter-spacing: -0.025em;
 }
 
 p {
@@ -63,9 +100,9 @@ p {
 
 .app {
   width: 100%;
-  max-width: 1100px;
+  max-width: 1250px;
   margin: 0 auto;
-  padding: 20px 14px 60px;
+  padding: 20px 18px 60px;
 }
 
 /* Login e cadastro */
@@ -74,8 +111,8 @@ p {
   max-width: 1000px;
   margin: 30px auto;
   padding: 24px;
-  background-color: white;
-  border: 1px solid #ddd;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 10px
 }
 
@@ -102,9 +139,9 @@ p {
 
 .paginaAuth details {
   padding: 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border);
   border-radius: 6px;
-  background-color: #f7f7f7;
+  background-color: var(--surface-alt);
 }
 
 /* Cabeçalho do usuario */
@@ -115,8 +152,8 @@ p {
   gap: 12px;
   padding: 15px;
   margin-bottom: 24px;
-  background-color: white;
-  border: 1px solid #ddd;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 8px
 }
 
@@ -151,8 +188,8 @@ p {
   display: flex;
   flex-direction: column;
   padding: 20px;
-  background-color: white;
-  border: 1px solid #ddd;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 8px;
 }
 
@@ -183,15 +220,37 @@ p {
 }
 
 .menuHeader p {
-  color: #555;
+  color: var(--muted);
 }
 
 .bannerPromocao {
   padding: 20px;
   margin-bottom: 24px;
-  border: 1px solid #bbb;
+  border: 1px solid var(--border);
   border-radius: 8px;
-  background-color: #dedede;
+  background-color: #302823;
+}
+
+/* Foto da oferta */
+
+.bannerPromocao {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.bannerPromocao > div {
+  flex: 1;
+  min-width: 220px;
+}
+
+.brasaOfertaImagem {
+  width: 210px;
+  max-width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 10px;
 }
 
 .bannerPromocao h2 {
@@ -210,13 +269,13 @@ p {
 }
 
 .categorias .selected {
-  background-color: #333;
-  color: white;
-  border-color: #333;
+  background-color: var(--orange);
+  color: #18110c;
+  border-color: var(--orange);
 }
 
 .categorias .selected:hover {
-  background-color: #444;
+  background-color: var(--orange-hover);
 }
 
 .produtoGrid {
@@ -229,9 +288,48 @@ p {
   display: flex;
   flex-direction: column;
   padding: 20px;
-  background-color: white;
-  border: 1px solid #ddd;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 8px;
+}
+
+/* Fotos dos produtos */
+
+.produtoCard {
+  padding: 0;
+  overflow: hidden;
+}
+
+.brasaProdutoImagem {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: #111;
+}
+
+.brasaProdutoImagem img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.produtoCard:hover .brasaProdutoImagem img {
+  transform: scale(1.045);
+}
+
+.produtoCard > div:not(.brasaProdutoImagem) {
+  padding: 0 18px;
+}
+
+.produtoCard > div:nth-of-type(2) {
+  padding-top: 18px;
+  flex: 1;
+}
+
+.produtoCard > div:nth-of-type(3) {
+  padding-bottom: 8px;
 }
 
 .produtoCard h2 {
@@ -247,7 +345,7 @@ p {
 }
 
 .precoAntigo {
-  color: #777;
+  color: var(--muted);
 }
 
 .produtoPreco {
@@ -256,14 +354,14 @@ p {
 }
 
 .produtoCard button {
-  margin-top: auto
+  margin: auto 18px 18px;
 }
 
 .menuSumario {
   margin-top: 24px;
   padding: 20px;
-  background-color: white;
-  border: 1px solid #ddd;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 8px;
 }
 
@@ -286,8 +384,18 @@ p {
   max-height: 90vh;
   overflow-y: auto;
   padding: 24px;
-  background-color: white;
+  background-color: var(--surface);
   border-radius: 10px
+}
+
+.brasaModalImagem {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  max-height: 250px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 
 .botoesQuantidade {
@@ -369,8 +477,8 @@ p {
 
 .produtoCarrinho, .resumoCarrinho, .finalizacaoCard, .resumoFinalizacao, .pedidoCard, .perfilCard {
   padding: 20px;
-  background-color: white;
-  border: 1px solid #ddd;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 8px;
   min-width: 0;
 }
@@ -405,7 +513,7 @@ p {
 
 .resumoCarrinho p {
   padding-bottom: 8px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border);
 }
 
 .acoesCarrinho, .acoesFinalizacao {
@@ -427,7 +535,7 @@ p {
 
 .itemFinalizacao {
   padding: 14px 0;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border);
 }
 
 .itemFinalizacao:last-child {
@@ -466,8 +574,8 @@ p {
 
 .resumoFinalizacao p[role="alert"] {
   padding: 12px;
-  background-color: #eee;
-  border: 1px solid #999;
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border);
   border-radius: 6px;
 }
 
@@ -485,7 +593,7 @@ p {
   align-items: center;
   gap: 12px;
   padding: 12px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border);
   border-radius: 6px
 }
 
@@ -505,13 +613,13 @@ p {
 }
 
 .etapaConcluida {
-  background-color: #e9e9e9;
+  background-color: #282a30;
 }
 
 .etapaAtual {
-  background-color: #333;
+  background-color: var(--orange);
   color: white;
-  border-color: #333;
+  border-color: var(--orange);
 }
 
 .etapaAtual span {
@@ -520,7 +628,7 @@ p {
 
 .itemPedido {
   padding: 12px 0;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border);
 }
 
 .itemPedido p {
@@ -544,7 +652,7 @@ p {
 
 .recompensa {
   padding: 15px 0;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border);
 }
 
 .recompensa:last-child {
@@ -588,8 +696,8 @@ p {
 .bannerCampanha {
   padding: 20px;
   margin-bottom: 16px;
-  background-color: white;
-  border: 1px solid #bbb;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 8px;
 }
 
@@ -617,8 +725,8 @@ p {
 
 .authCard {
   padding: 20px;
-  background-color: #fafafa;
-  border: 1px solid #ddd;
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border);
   border-radius: 8px;
   min-width: 0
 }
@@ -645,8 +753,8 @@ p {
 
 .authCard .avisoAuth {
   padding: 12px;
-  background-color: #eee;
-  border: 1px solid #999;
+  background-color: var(--surface-alt);
+  border: 1px solid var(--border);
   border-radius: 6px
 }
 
@@ -659,7 +767,7 @@ p {
   text-align: center;
   margin-top: 24px;
   padding-top: 20px;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid var(--border);
 }
 
 .continuarVisitante p {
@@ -689,8 +797,8 @@ p {
   gap: 16px;
   padding: 20px;
   margin-bottom: 20px;
-  background-color: white;
-  border: 1px solid #ddd;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 8px;
 }
 
@@ -711,8 +819,8 @@ p {
 
 .carrinhoTotem {
   padding: 20px;
-  background-color: white;
-  border: 1px solid #ddd;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 8px;
   min-width: 0;
 }
@@ -723,7 +831,7 @@ p {
 
 .itemTotem {
   padding: 16px 0;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border);
 }
 
 .itemTotem h3 {
@@ -743,7 +851,7 @@ p {
 .totalTotem {
   margin: 20px 0;
   padding-top: 16px;
-  border-top: 1px solid #bbb;
+  border-top: 1px solid var(--border);
 }
 
 .carrinhoTotem > button {
@@ -756,8 +864,8 @@ p {
   max-width: 500px;
   margin: 20px auto;
   padding: 24px;
-  background-color: white;
-  border: 1px solid #ddd;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 8px
 }
 
@@ -837,8 +945,8 @@ p {
 
 .operacaoCard, .pedidoOperacao {
   padding: 20px;
-  background-color: white;
-  border: 1px solid #ddd;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 8px;
 }
 
@@ -856,7 +964,7 @@ p {
 
 .itemOperacao {
   padding: 12px 0;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--border);
 }
 
 .itemOperacao p {
@@ -874,3 +982,3897 @@ p {
   }
 }
 
+/* BRASA 21 - identidade visual */
+
+.brasaPagina {
+  width: 100%;
+  min-width: 0;
+}
+
+.brasaHeader {
+  position: sticky;
+  top: 10px;
+  z-index: 20;
+  margin-bottom: 22px;
+  padding: 10px 20px;
+  background: rgba(19, 20, 23, 0.97);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.2);
+}
+
+.brasaHeaderPrincipal {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.brasaMarca {
+  flex-shrink: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+.brasaMarca:hover:not(:disabled) {
+  background: transparent;
+  border-color: transparent;
+}
+
+.brasaMarca img {
+  display: block;
+  width: 105px;
+  height: 62px;
+  object-fit: contain;
+  mix-blend-mode: screen;
+}
+
+.brasaNavegacao {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+
+.brasaNavegacao:empty {
+  display: none;
+}
+
+.brasaNavegacao button {
+  padding: 10px 13px;
+  border: 0;
+  background: transparent;
+  font-weight: 700;
+}
+
+.brasaNavegacao button:hover:not(:disabled) {
+  background: var(--surface-alt);
+  border-color: transparent;
+}
+
+.brasaContador {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 5px;
+  margin-left: 4px;
+  background: var(--orange);
+  border-radius: 50px;
+  color: #141414;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.brasaConta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-left: auto;
+}
+
+.brasaConta button {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.brasaConta .brasaBotaoEntrar {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: #16100b;
+}
+
+.brasaConta .brasaBotaoEntrar:hover:not(:disabled) {
+  background: var(--orange-hover);
+  border-color: var(--orange-hover);
+}
+
+.brasaBotaoPerfil {
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.brasaBotaoSair {
+  color: var(--muted);
+}
+
+.brasaAcompanhar {
+  width: 100%;
+  margin-top: 10px;
+  background: #34271b;
+  color: #ffc28b;
+  border-color: #76502c;
+  text-align: center;
+}
+
+/* Banner inicial */
+
+.brasaHero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 530px;
+  padding: 56px;
+  overflow: hidden;
+  isolation: isolate;
+  background: #0c0907;
+  border: 1px solid #3e2b1e;
+  border-radius: 18px;
+}
+
+.brasaHeroImagem {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: -2;
+}
+
+.brasaHero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(6, 7, 9, 0.96) 0%, rgba(6, 7, 9, 0.82) 31%, rgba(6, 7, 9, 0.1) 73%);
+}
+
+.brasaHeroConteudo {
+  max-width: 560px;
+}
+
+.brasaEtiqueta {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: var(--orange);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+}
+
+.brasaHero h1,
+.brasaSecaoTitulo h2,
+.brasaDemonstracao h2 {
+  font-family: Impact, "Arial Narrow", Arial, sans-serif;
+  font-stretch: condensed;
+  font-weight: 900;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+}
+
+.brasaHero h1 {
+  margin-bottom: 22px;
+  font-size: clamp(3.4rem, 6.8vw, 6.4rem);
+  line-height: 0.98;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.45);
+}
+
+.brasaHero h1 span {
+  color: var(--orange);
+}
+
+.brasaHeroConteudo > p {
+  max-width: 390px;
+  margin-bottom: 26px;
+  color: #e1ded9;
+  font-size: 17px;
+}
+
+.brasaBotaoPrincipal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 51px;
+  padding: 15px 24px;
+  background: var(--orange);
+  border-radius: 10px;
+  color: #14100a;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.brasaBotaoPrincipal:hover {
+  background: #ff8429;
+  transform: translateY(-2px);
+}
+
+.brasaHeroAviso {
+  display: block;
+  margin-top: 14px;
+  color: #c0bbb5;
+  font-size: 12px;
+}
+
+/* Como funciona */
+
+.brasaBeneficios {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 18px 0 72px;
+  background: #1a1b1f;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.brasaBeneficios > div {
+  padding: 22px 25px;
+}
+
+.brasaBeneficios > div + div {
+  border-left: 1px solid var(--border);
+}
+
+.brasaBeneficios strong {
+  color: var(--orange);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+}
+
+.brasaBeneficios p {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* Unidades do BRASA 21 */
+
+.brasaUnidades {
+  scroll-margin-top: 125px;
+  margin-bottom: 64px;
+}
+
+.brasaSecaoTitulo h2 {
+  margin-bottom: 10px;
+  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+}
+
+.brasaSecaoTitulo p {
+  max-width: 640px;
+  color: var(--muted);
+}
+
+.brasaCampoPesquisa {
+  display: block;
+  max-width: 440px;
+  margin-top: 26px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.brasaCampoPesquisa span {
+  display: block;
+  margin-bottom: 9px;
+}
+
+.brasaCampoPesquisa input {
+  min-height: 48px;
+}
+
+.brasaUnitGrid {
+  margin-top: 24px;
+}
+
+.brasaUnitCard {
+  position: relative;
+  min-height: 285px;
+  padding: 24px;
+  background: linear-gradient(150deg, #222328 0%, #18191d 100%);
+  border: 1px solid #393940;
+  border-radius: 14px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.brasaUnitCard:hover {
+  border-color: #ba581a;
+  transform: translateY(-3px);
+}
+
+.brasaUnidadeNumero {
+  margin-bottom: 20px;
+  color: var(--orange);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.brasaUnitCard h3 {
+  margin-bottom: 12px;
+  font-family: Impact, "Arial Narrow", Arial, sans-serif;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.brasaUnitCard p {
+  color: var(--muted);
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.brasaUnitCard .unitStatus {
+  margin-top: auto;
+  padding-top: 15px;
+  font-size: 13px;
+}
+
+.brasaAberta {
+  color: #80dc9e;
+}
+
+.brasaFechada {
+  color: #d6a197;
+}
+
+.brasaUnitCard .brasaBotaoSelecionar {
+  align-self: stretch;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 16px;
+  background: var(--orange);
+  color: #18110c;
+  border: 1px solid var(--orange);
+  font-weight: 800;
+}
+
+.brasaUnitCard .brasaBotaoSelecionar:hover:not(:disabled) {
+  background: var(--orange-hover);
+  border-color: var(--orange-hover);
+}
+
+/* Demonstracao e rodape */
+
+.brasaDemonstracao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 35px;
+  margin-bottom: 22px;
+  background: linear-gradient(120deg, #302015, #1a1b20 66%);
+  border: 1px solid #664025;
+  border-radius: 16px;
+}
+
+.brasaDemonstracao h2 {
+  margin-bottom: 10px;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+}
+
+.brasaDemonstracao p {
+  max-width: 650px;
+  margin-bottom: 0;
+  color: #c5c2bd;
+}
+
+.brasaDemoBotoes {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.brasaDemoBotoes button {
+  min-height: 48px;
+  font-weight: 800;
+}
+
+.brasaDemoBotoes button:first-child {
+  background: var(--orange);
+  color: #19120c;
+  border-color: var(--orange);
+}
+
+.brasaDemoBotoes button:first-child:hover:not(:disabled) {
+  background: var(--orange-hover);
+  border-color: var(--orange-hover);
+}
+
+.brasaRodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 20px 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.brasaRodape span:first-child {
+  color: var(--text);
+  font-weight: 900;
+  letter-spacing: 0.05em;
+}
+
+/* Ajustes gerais dos fluxos */
+
+.paginaMenu,
+.paginaCarrinho,
+.paginaFinalizacao,
+.paginaPedido,
+.paginaPerfil,
+.paginaOperacao {
+  padding-top: 12px;
+}
+
+.paginaMenu h1,
+.paginaCarrinho h1,
+.paginaFinalizacao h1,
+.paginaPedido h1,
+.paginaPerfil h1,
+.paginaOperacao h1 {
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
+}
+
+.unitCard,
+.produtoCard,
+.menuSumario,
+.produtoCarrinho,
+.resumoCarrinho,
+.finalizacaoCard,
+.resumoFinalizacao,
+.pedidoCard,
+.perfilCard,
+.authCard,
+.topoTotem,
+.carrinhoTotem,
+.loginTotem,
+.operacaoCard,
+.pedidoOperacao {
+  border-radius: 12px;
+}
+
+.produtoCard,
+.produtoCarrinho,
+.finalizacaoCard,
+.pedidoCard,
+.perfilCard {
+  gap: 8px;
+}
+
+.menuHeader p,
+.produtoCard > p:not(.produtoPreco),
+.paginaCarrinho p,
+.paginaFinalizacao p,
+.paginaPedido p,
+.paginaPerfil p {
+  color: var(--muted);
+}
+
+.produtoPreco,
+.saldoPontos {
+  color: var(--orange);
+}
+
+.promocaoLabel {
+  color: #ffbf8c;
+}
+
+.produtoCard button,
+.menuSumario button,
+.authCard button[type="submit"],
+.acoesCarrinho button:last-child,
+.acoesFinalizacao button:last-child,
+.pedidoOperacao button {
+  background-color: var(--orange);
+  border-color: var(--orange);
+  color: #18110c;
+  font-weight: 800;
+}
+
+.produtoCard button:hover:not(:disabled),
+.menuSumario button:hover:not(:disabled),
+.authCard button[type="submit"]:hover:not(:disabled),
+.acoesCarrinho button:last-child:hover:not(:disabled),
+.acoesFinalizacao button:last-child:hover:not(:disabled),
+.pedidoOperacao button:hover:not(:disabled) {
+  background-color: var(--orange-hover);
+  border-color: var(--orange-hover);
+}
+
+.bannerCampanha {
+  padding: 26px;
+  background: linear-gradient(110deg, #3c2415, #201d1c);
+  border-color: #754425;
+  border-radius: 13px;
+}
+
+.bannerCampanha h2,
+.bannerPromocao h2 {
+  color: #ff9e57;
+}
+
+.modalBackground {
+  z-index: 50;
+}
+
+.modalConteudo {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.etapaAtual {
+  color: #15110e;
+}
+
+.etapaAtual span {
+  border-color: #15110e;
+}
+
+/* BRASA 21 - responsividade */
+
+@media (max-width: 999px) {
+  .brasaDemonstracao {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 767px) {
+  .brasaHeader {
+    top: 0;
+    padding: 9px 12px;
+    border-radius: 0 0 12px 12px;
+  }
+
+  .brasaHeaderPrincipal {
+    flex-wrap: wrap;
+    column-gap: 8px;
+    row-gap: 4px;
+  }
+
+  .brasaMarca img {
+    width: 90px;
+    height: 55px;
+  }
+
+  .brasaNavegacao {
+    order: 3;
+    flex-basis: 100%;
+    justify-content: space-around;
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
+  }
+
+  .brasaNavegacao button {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .brasaConta {
+    margin-left: auto;
+  }
+
+  .brasaConta button {
+    padding: 9px 11px;
+    font-size: 13px;
+  }
+
+  .brasaHero {
+    min-height: 600px;
+    align-items: flex-start;
+    padding: 33px 24px;
+  }
+
+  .brasaHeroImagem {
+    object-position: 62% center;
+  }
+
+  .brasaHero::after {
+    background: linear-gradient(180deg, rgba(7, 7, 8, 0.96) 2%, rgba(7, 7, 8, 0.84) 38%, rgba(7, 7, 8, 0.08) 82%);
+  }
+
+  .brasaHero h1 {
+    max-width: 450px;
+    font-size: clamp(3.2rem, 10vw, 5rem);
+  }
+
+  .brasaHeroConteudo > p {
+    font-size: 15px;
+  }
+
+  .brasaBeneficios {
+    grid-template-columns: 1fr;
+    margin-bottom: 55px;
+  }
+
+  .brasaBeneficios > div {
+    padding: 17px 20px;
+  }
+
+  .brasaBeneficios > div + div {
+    border-left: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .brasaDemonstracao {
+    padding: 25px;
+  }
+
+  .brasaDemoBotoes {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .brasaDemoBotoes button {
+    flex: 1;
+    min-width: 135px;
+  }
+}
+
+@media (max-width: 420px) {
+  .app {
+    padding: 10px 12px 50px;
+  }
+
+  .brasaHero {
+    min-height: 550px;
+    padding: 28px 20px;
+  }
+
+  .brasaHero h1 {
+    font-size: 3.1rem;
+  }
+
+  .brasaEtiqueta {
+    letter-spacing: 0.08em;
+  }
+
+  .brasaUnitCard {
+    min-height: 255px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  button,
+  .brasaBotaoPrincipal,
+  .brasaUnitCard {
+    transition: none;
+  }
+}
+
+/* BRASA 21 - carrinho */
+
+.brasaCarrinhoCabecalho {
+  margin-bottom: 30px;
+}
+
+.brasaCarrinhoCabecalho h1 {
+  margin: 10px 0;
+  font-weight: 900;
+}
+
+.brasaCarrinhoCabecalho > p {
+  margin: 0 0 18px;
+}
+
+.brasaCarrinhoUnidade {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 15px;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  font-size: 13px;
+}
+
+.brasaCarrinhoUnidade > span {
+  margin-right: 3px;
+  color: var(--orange);
+  font-size: 10px;
+}
+
+.brasaCarrinhoUnidade strong {
+  color: var(--text);
+}
+
+.brasaCarrinhoSecaoTopo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 5px;
+}
+
+.brasaCarrinhoSecaoTopo h2 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.brasaCarrinhoSecaoTopo > span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.brasaCarrinhoItem {
+  padding: 22px;
+}
+
+.brasaCarrinhoItemTopo {
+  display: grid;
+  grid-template-columns: 145px minmax(0, 1fr);
+  align-items: start;
+  gap: 20px;
+}
+
+.brasaCarrinhoFoto {
+  width: 145px;
+  height: 145px;
+  object-fit: cover;
+  border-radius: 11px;
+  background: #101114;
+}
+
+.brasaCarrinhoInfo {
+  min-width: 0;
+}
+
+.brasaCarrinhoCategoria {
+  color: var(--orange);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.brasaCarrinhoInfo h3 {
+  margin: 8px 0;
+  font-size: clamp(19px, 2.4vw, 24px);
+}
+
+.brasaCarrinhoInfo .brasaCarrinhoDescricao {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.brasaCarrinhoPrecoUnitario {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.brasaCarrinhoPrecoUnitario s {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.brasaCarrinhoPrecoUnitario strong {
+  color: var(--orange);
+  font-size: 18px;
+}
+
+.brasaCarrinhoPrecoUnitario span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.brasaCarrinhoControles {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 18px 0;
+  margin: 20px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.brasaCarrinhoQuantidade,
+.brasaCarrinhoTotalItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.brasaCarrinhoQuantidade > span,
+.brasaCarrinhoTotalItem > span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.brasaCarrinhoQuantidade .botoesCarrinho {
+  margin: 0;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.brasaCarrinhoQuantidade .botoesCarrinho button {
+  min-width: 43px;
+  min-height: 42px;
+  padding: 8px;
+  border: 0;
+  border-radius: 0;
+}
+
+.brasaCarrinhoQuantidade .botoesCarrinho strong {
+  min-width: 44px;
+  text-align: center;
+}
+
+.brasaCarrinhoTotalItem {
+  align-items: flex-end;
+}
+
+.brasaCarrinhoTotalItem strong {
+  color: var(--text);
+  font-size: 23px;
+}
+
+.brasaCarrinhoObservacao {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.brasaCarrinhoItem textarea {
+  width: 100%;
+  min-height: 74px;
+  margin-bottom: 0;
+}
+
+.brasaCarrinhoRemover {
+  display: block;
+  margin: 12px 0 0 auto;
+  padding: 7px 0;
+  border: 0;
+  color: #e7aaa3;
+  background: transparent;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-size: 13px;
+}
+
+.brasaCarrinhoRemover:hover:not(:disabled) {
+  color: #ffcec7;
+  background: transparent;
+  border: 0;
+}
+
+.brasaCarrinhoVoltar {
+  align-self: flex-start;
+  padding-left: 0;
+  background: transparent;
+  border: 0;
+  color: var(--orange);
+  font-weight: 700;
+}
+
+.brasaCarrinhoVoltar:hover:not(:disabled) {
+  background: transparent;
+  border-color: transparent;
+  color: #ff9e57;
+}
+
+.brasaCarrinhoResumo {
+  padding: 25px;
+}
+
+.brasaCarrinhoResumo h2 {
+  margin: 10px 0 25px;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.brasaCarrinhoResumoLinha {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 14px 0;
+  font-size: 14px;
+}
+
+.brasaCarrinhoResumoLinha span {
+  color: var(--muted);
+}
+
+.brasaCarrinhoResumoLinha strong {
+  color: var(--text);
+}
+
+.brasaCarrinhoResumo .brasaCarrinhoAviso {
+  padding: 13px;
+  margin: 18px 0;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.brasaCarrinhoResumoTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.brasaCarrinhoResumoTotal span {
+  font-weight: 800;
+}
+
+.brasaCarrinhoResumoTotal strong {
+  color: var(--orange);
+  font-size: 30px;
+}
+
+.brasaCarrinhoAcoes {
+  margin-top: 25px;
+}
+
+.brasaCarrinhoAcoes button:first-child {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: #18110c;
+  font-weight: 800;
+}
+
+.brasaCarrinhoAcoes button:first-child:hover:not(:disabled) {
+  background: var(--orange-hover);
+  border-color: var(--orange-hover);
+}
+
+.brasaCarrinhoAcoes button:last-child {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text);
+  font-weight: 500;
+}
+
+.brasaCarrinhoAcoes button:last-child:hover:not(:disabled) {
+  background: var(--surface-alt);
+  border-color: var(--orange);
+}
+
+.brasaCarrinhoResumo .brasaCarrinhoRodape {
+  margin: 18px 0 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.brasaCarrinhoVazio {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 12px;
+  padding: 30px;
+  text-align: center;
+}
+
+.brasaCarrinhoVazio img {
+  width: 100%;
+  max-width: 380px;
+  height: 180px;
+  object-fit: cover;
+  object-position: right center;
+  border-radius: 10px;
+}
+
+.brasaCarrinhoVazio h3 {
+  margin: 5px 0 0;
+  font-size: 23px;
+}
+
+.brasaCarrinhoVazio p {
+  margin: 0;
+}
+
+.brasaCarrinhoVazio button {
+  margin-top: 10px;
+  background: var(--orange);
+  border-color: var(--orange);
+  color: #18110c;
+  font-weight: 800;
+}
+
+@media (min-width: 768px) {
+  .brasaCarrinhoResumo {
+    position: sticky;
+    top: 112px;
+  }
+}
+
+@media (max-width: 600px) {
+  .brasaCarrinhoItem {
+    padding: 16px;
+  }
+
+  .brasaCarrinhoItemTopo {
+    grid-template-columns: 105px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .brasaCarrinhoFoto {
+    width: 105px;
+    height: 120px;
+  }
+
+  .brasaCarrinhoInfo .brasaCarrinhoDescricao {
+    font-size: 12px;
+  }
+
+  .brasaCarrinhoTotalItem strong {
+    font-size: 19px;
+  }
+
+  .brasaCarrinhoResumo {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 360px) {
+  .brasaCarrinhoItemTopo {
+    grid-template-columns: 1fr;
+  }
+
+  .brasaCarrinhoFoto {
+    width: 100%;
+    height: 170px;
+  }
+}
+
+/* Checkout BRASA 21 */
+
+.brasaCheckoutCabecalho {
+  margin-bottom: 26px;
+}
+
+.brasaCheckoutCabecalho h1 {
+  font-family: Impact, "Arial Narrow", Arial, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.015em;
+}
+
+.brasaCheckoutCabecalho > p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.brasaCheckoutEtapas {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 25px;
+  padding: 14px 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.brasaCheckoutEtapas .concluida {
+  color: #79d5a2;
+}
+
+.brasaCheckoutEtapas .atual {
+  color: var(--orange);
+}
+
+.brasaCheckoutLayout {
+  gap: 20px;
+}
+
+.brasaCheckout .finalizacaoPrincipal {
+  gap: 18px;
+}
+
+.brasaCheckoutCard {
+  padding: 25px;
+}
+
+.brasaCheckoutCardTopo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.brasaCheckoutNumero {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--orange);
+  font-size: 11px;
+  letter-spacing: 0.13em;
+  font-weight: 800;
+}
+
+.brasaCheckout .brasaCheckoutCard h2 {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 900;
+  letter-spacing: 0.015em;
+}
+
+.brasaCheckoutTag,
+.brasaCheckoutContador,
+.brasaCheckoutSaldo {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--surface-alt);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.brasaCheckoutSaldo {
+  color: var(--orange);
+}
+
+.brasaCheckoutUnidade {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 18px;
+  border: 1px solid #514032;
+  border-radius: 10px;
+  background: #29231f;
+}
+
+.brasaCheckoutUnidadeIcone {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 9px;
+  background: #4a301f;
+  color: var(--orange);
+  font-size: 28px;
+}
+
+.brasaCheckoutUnidade strong {
+  display: block;
+  color: var(--text);
+}
+
+.brasaCheckoutUnidade p {
+  margin: 6px 0 0;
+  font-size: 13px;
+}
+
+.brasaCheckoutLista {
+  display: flex;
+  flex-direction: column;
+}
+
+.brasaCheckoutProduto {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 15px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.brasaCheckoutProduto:first-child {
+  padding-top: 0;
+}
+
+.brasaCheckoutProduto:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.brasaCheckoutProduto img {
+  width: 88px;
+  height: 90px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface-alt);
+}
+
+.brasaCheckoutProdutoInfo {
+  min-width: 0;
+}
+
+.brasaCheckoutProdutoInfo > span {
+  color: var(--orange);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.brasaCheckoutProdutoInfo h3 {
+  margin: 5px 0;
+  font-size: 17px;
+  overflow-wrap: anywhere;
+}
+
+.brasaCheckoutProdutoInfo p {
+  margin: 6px 0 0;
+  font-size: 13px;
+}
+
+.brasaCheckoutProdutoInfo .brasaCheckoutObservacao {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.brasaCheckoutPrecoItem {
+  color: var(--text);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.brasaCheckoutPontos {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 17px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-alt);
+  cursor: pointer;
+}
+
+.brasaCheckoutPontos.selecionado {
+  border-color: var(--orange);
+  background: #34271f;
+}
+
+.brasaCheckoutPontos.indisponivel {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.brasaCheckoutPontos input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  accent-color: var(--orange);
+}
+
+.brasaCheckoutPontos > span:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+
+.brasaCheckoutPontos strong,
+.brasaCheckoutPontos small {
+  display: block;
+}
+
+.brasaCheckoutPontos strong {
+  color: var(--text);
+  font-size: 14px;
+}
+
+.brasaCheckoutPontos small {
+  margin-top: 5px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.brasaCheckoutPontosDesconto {
+  color: var(--orange);
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.brasaCheckoutCard .brasaCheckoutInfoPontos {
+  margin: 15px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.brasaCheckoutFormasPagamento {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.brasaCheckoutFormasPagamento legend {
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.brasaCheckout .brasaCheckoutPagamentoOpcao {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 17px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-alt);
+  cursor: pointer;
+}
+
+.brasaCheckout .brasaCheckoutPagamentoOpcao.selecionado {
+  border-color: var(--orange);
+  background: #34271f;
+}
+
+.brasaCheckoutPagamentoOpcao input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  flex: 0 0 18px;
+  accent-color: var(--orange);
+}
+
+.brasaCheckoutPagamentoOpcao span {
+  min-width: 0;
+}
+
+.brasaCheckoutPagamentoOpcao strong,
+.brasaCheckoutPagamentoOpcao small {
+  display: block;
+}
+
+.brasaCheckoutPagamentoOpcao strong {
+  color: var(--text);
+  font-size: 15px;
+}
+
+.brasaCheckoutPagamentoOpcao small {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.brasaCheckoutSimulacao {
+  padding: 18px;
+  margin-top: 20px;
+  border: 1px dashed #595047;
+  border-radius: 10px;
+  background: #24211f;
+}
+
+.brasaCheckoutSimulacao label {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.brasaCheckoutSimulacao select {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.brasaCheckout .brasaCheckoutSimulacao p {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.brasaCheckoutResumo {
+  padding: 25px;
+}
+
+.brasaCheckoutResumo h2 {
+  margin: 0 0 25px;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.brasaCheckoutResumoLinha {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 14px 0;
+  font-size: 14px;
+}
+
+.brasaCheckoutResumoLinha span {
+  color: var(--muted);
+}
+
+.brasaCheckoutResumoLinha strong {
+  color: var(--text);
+}
+
+.brasaCheckoutResumoLinha.desconto span,
+.brasaCheckoutResumoLinha.desconto strong {
+  color: #79d5a2;
+}
+
+.brasaCheckoutResumoTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding-top: 20px;
+  margin-top: 20px;
+  border-top: 1px solid var(--border);
+  font-weight: 800;
+}
+
+.brasaCheckoutResumoTotal strong {
+  color: var(--orange);
+  font-size: 29px;
+}
+
+.brasaCheckoutResumo .brasaCheckoutResumoNota {
+  padding: 13px;
+  margin: 18px 0 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-alt);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.brasaCheckoutResumo p.brasaCheckoutErro {
+  padding: 12px 14px;
+  margin-top: 15px;
+  border: 1px solid #ad5a50;
+  border-radius: 8px;
+  background: #39211e;
+  color: #ffd4ce;
+  font-size: 13px;
+}
+
+.brasaCheckoutAcoes {
+  margin-top: 23px;
+}
+
+.brasaCheckoutAcoes button {
+  min-height: 48px;
+}
+
+.brasaCheckoutAcoes button:first-child {
+  background: var(--orange);
+  color: #18110c;
+  border-color: var(--orange);
+  font-weight: 800;
+}
+
+.brasaCheckoutAcoes button:first-child:hover:not(:disabled) {
+  background: var(--orange-hover);
+  border-color: var(--orange-hover);
+}
+
+.brasaCheckoutAcoes button:last-child {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.brasaCheckoutAcoes button:last-child:hover:not(:disabled) {
+  background: var(--surface-alt);
+  border-color: var(--orange);
+}
+
+.brasaCheckoutResumo .brasaCheckoutRodape {
+  margin: 19px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .brasaCheckoutResumo {
+    position: sticky;
+    top: 112px;
+  }
+}
+
+@media (max-width: 600px) {
+  .brasaCheckoutCard,
+  .brasaCheckoutResumo {
+    padding: 18px;
+  }
+
+  .brasaCheckoutEtapas {
+    gap: 8px;
+    padding: 13px;
+    font-size: 11px;
+  }
+
+  .brasaCheckoutProduto {
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .brasaCheckoutProduto img {
+    width: 72px;
+    height: 78px;
+  }
+
+  .brasaCheckoutPrecoItem {
+    grid-column: 2;
+    margin-top: -5px;
+  }
+
+  .brasaCheckoutFormasPagamento {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 380px) {
+  .brasaCheckoutPontos {
+    flex-wrap: wrap;
+  }
+
+  .brasaCheckoutPontosDesconto {
+    margin-left: 32px;
+  }
+}
+
+/* BRASA 21 - acompanhamento do pedido */
+
+.brasaPedidoCabecalho {
+  margin-bottom: 22px;
+}
+
+.brasaPedidoTitulo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.brasaPedidoTitulo h1 {
+  margin-bottom: 10px;
+  font-size: clamp(2rem, 4vw, 3.3rem);
+  font-weight: 900;
+  letter-spacing: -0.045em;
+}
+
+.brasaPedidoTitulo p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.brasaPedidoNumero {
+  display: block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+  background: var(--surface);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.brasaPedidoDestaque {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 30px;
+  margin-bottom: 22px;
+  border: 1px solid #754425;
+  border-radius: 14px;
+  background: linear-gradient(115deg, #3b271b 0%, #211f20 65%, #1a1c20 100%);
+}
+
+.brasaPedidoRotulo {
+  display: block;
+  color: #ffab71;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.brasaPedidoDestaque h2 {
+  margin: 10px 0 8px;
+  color: var(--text);
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
+  font-weight: 900;
+}
+
+.brasaPedidoDestaque p {
+  margin: 0;
+  color: #d1c7c0;
+}
+
+.brasaPedidoContador {
+  flex-shrink: 0;
+  padding: 12px 16px;
+  border: 1px solid #825438;
+  border-radius: 9px;
+  background: rgba(255, 106, 0, 0.12);
+  color: #ffc49d;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+}
+
+.brasaPedidoLayout {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+
+.brasaPedidoCard {
+  padding: 25px;
+  border-radius: 13px;
+}
+
+.brasaPedidoCardTopo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.brasaPedidoCardTopo h2,
+.brasaPedidoRetirada h2 {
+  margin: 7px 0 0;
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  font-weight: 900;
+}
+
+.brasaPedidoEtapas {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.brasaPedidoEtapas .etapaPedido {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  min-width: 0;
+  padding: 18px 14px;
+  border: 0;
+  border-left: 2px solid var(--border);
+  border-radius: 0;
+  background: transparent;
+}
+
+.brasaPedidoEtapas .etapaPedido:last-child {
+  border-left-color: transparent;
+}
+
+.brasaPedidoEtapas .etapaConcluida {
+  border-left-color: var(--orange);
+}
+
+.brasaPedidoEtapas .etapaAtual {
+  background: #33261e;
+  border-left-color: var(--orange);
+  border-radius: 0 9px 9px 0;
+  color: var(--text);
+}
+
+.brasaPedidoEtapas .brasaPedidoEtapaIcone {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border: 1px solid #66646a;
+  border-radius: 50%;
+  background: #26282d;
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.brasaPedidoEtapas .etapaConcluida .brasaPedidoEtapaIcone {
+  border-color: var(--orange);
+  background: var(--orange);
+  color: #1b1109;
+}
+
+.brasaPedidoEtapas .etapaAtual .brasaPedidoEtapaIcone {
+  border-color: var(--orange);
+  background: #ff6a00;
+  color: #1b1109;
+}
+
+.brasaPedidoEtapaTexto {
+  flex: 1;
+  min-width: 0;
+}
+
+.brasaPedidoEtapaTexto strong {
+  display: block;
+  color: var(--text);
+  font-size: 15px;
+}
+
+.brasaPedido .brasaPedidoEtapaTexto p {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.brasaPedidoEtapas .etapaAtual .brasaPedidoEtapaTexto p {
+  color: #d5c3b5;
+}
+
+.brasaPedidoEtapaMarcador {
+  flex-shrink: 0;
+  color: #ffac72;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.brasaPedidoInformacao {
+  padding: 16px 18px;
+  margin-top: 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-alt);
+}
+
+.brasaPedidoInformacao strong {
+  color: var(--text);
+}
+
+.brasaPedido .brasaPedidoInformacao p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.brasaPedidoPontos {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding: 20px;
+  margin-top: 18px;
+  border: 1px solid #4d3b26;
+  border-radius: 10px;
+  background: #29231e;
+}
+
+.brasaPedidoPontos strong {
+  display: block;
+  margin-top: 8px;
+  color: var(--orange);
+  font-size: 21px;
+}
+
+.brasaPedido .brasaPedidoPontos p {
+  margin: 7px 0 0;
+  font-size: 12px;
+}
+
+.brasaPedido .brasaPedidoPontosUsados {
+  color: #ffd0a9;
+}
+
+.brasaPedidoLateral {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+.brasaPedidoQuantidade {
+  padding: 7px 10px;
+  border-radius: 7px;
+  background: var(--surface-alt);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.brasaPedidoProdutos {
+  display: flex;
+  flex-direction: column;
+}
+
+.brasaPedido .brasaPedidoProduto {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.brasaPedido .brasaPedidoProduto:first-child {
+  padding-top: 0;
+}
+
+.brasaPedidoProduto img {
+  width: 76px;
+  height: 76px;
+  flex: 0 0 76px;
+  border-radius: 9px;
+  object-fit: cover;
+  background: #292a2d;
+}
+
+.brasaPedidoProduto > div {
+  min-width: 0;
+}
+
+.brasaPedidoProduto h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.brasaPedido .brasaPedidoProduto p {
+  margin: 4px 0;
+  color: var(--muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.brasaPedido .brasaPedidoProduto .brasaPedidoObservacao {
+  color: #d6c1b1;
+}
+
+.brasaPedidoPagamento {
+  padding-top: 17px;
+}
+
+.brasaPedidoPagamento > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 11px 0;
+  font-size: 13px;
+}
+
+.brasaPedidoPagamento span {
+  color: var(--muted);
+}
+
+.brasaPedidoPagamento strong {
+  text-align: right;
+}
+
+.brasaPedidoPagamento .brasaPedidoTotal {
+  align-items: baseline;
+  padding-top: 19px;
+  margin-top: 17px;
+  border-top: 1px solid var(--border);
+  font-weight: 800;
+}
+
+.brasaPedidoTotal strong {
+  color: var(--orange);
+  font-size: 25px;
+}
+
+.brasaPedidoRetirada > p {
+  margin: 7px 0;
+}
+
+.brasaPedidoRetiradaAviso {
+  padding: 13px 15px;
+  margin-top: 18px;
+  border: 1px solid #5d442c;
+  border-radius: 9px;
+  background: #2a241d;
+  color: #f3c4a3;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.brasaPedidoRodape {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.brasaPedidoRodape button {
+  min-height: 46px;
+  padding: 12px 25px;
+  background: var(--orange);
+  border-color: var(--orange);
+  color: #1c1109;
+  font-weight: 800;
+}
+
+.brasaPedidoRodape button:hover:not(:disabled) {
+  background: var(--orange-hover);
+  border-color: var(--orange-hover);
+}
+
+.brasaPedido .brasaPedidoRodape p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+@media (min-width: 900px) {
+  .brasaPedidoLayout {
+    grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr);
+    align-items: start;
+  }
+}
+
+@media (max-width: 600px) {
+  .brasaPedidoDestaque {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 22px;
+  }
+
+  .brasaPedidoCard {
+    padding: 18px;
+  }
+
+  .brasaPedidoEtapas .etapaPedido {
+    padding: 17px 10px;
+    gap: 11px;
+  }
+
+  .brasaPedidoEtapaMarcador {
+    font-size: 9px;
+  }
+
+  .brasaPedidoPagamento > div {
+    flex-wrap: wrap;
+  }
+}
+
+/* Perfil BRASA 21 */
+
+.brasaPerfilCabecalho {
+  margin-bottom: 24px;
+}
+
+.brasaPerfilCabecalho h1 {
+  margin: 12px 0 8px;
+  font-weight: 900;
+}
+
+.brasaPerfil .brasaPerfilCabecalho p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.brasaPerfilDestaque {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 28px;
+  margin-bottom: 22px;
+  border: 1px solid #704021;
+  border-radius: 14px;
+  background: radial-gradient(circle at 95% 20%, rgba(255, 106, 0, 0.2), transparent 45%), linear-gradient(120deg, #29201c, #1b1d21 70%);
+}
+
+.brasaPerfilIdentidade {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+}
+
+.brasaPerfilAvatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 76px;
+  flex: 0 0 76px;
+  border: 2px solid #ff9247;
+  border-radius: 17px;
+  background: #ff6a00;
+  color: #21130a;
+  font-size: 38px;
+  font-weight: 900;
+}
+
+.brasaPerfilRotulo {
+  display: inline-block;
+  color: #ffac74;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.brasaPerfilIdentidade h2 {
+  margin: 6px 0;
+  font-size: clamp(22px, 3vw, 30px);
+  overflow-wrap: anywhere;
+}
+
+.brasaPerfil .brasaPerfilIdentidade p {
+  margin: 0;
+  color: #cbc5c1;
+  overflow-wrap: anywhere;
+}
+
+.brasaPerfilMarca {
+  color: #faf6f0;
+  font-size: clamp(18px, 2.5vw, 27px);
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+}
+
+.brasaPerfilMarca span {
+  color: var(--orange);
+}
+
+.brasaPerfilLayout {
+  gap: 20px;
+}
+
+.brasaPerfilLayout .perfilColuna {
+  gap: 20px;
+}
+
+.brasaPerfil .brasaPerfilCard {
+  padding: 25px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+}
+
+.brasaPerfilCard h2 {
+  margin: 8px 0 21px;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.brasaPerfilDado {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  padding: 17px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.brasaPerfilDado:first-of-type {
+  padding-top: 4px;
+}
+
+.brasaPerfilDado:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.brasaPerfilDado span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.brasaPerfilDado strong {
+  max-width: 100%;
+  font-size: 14px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.brasaPerfilRegras {
+  display: flex;
+  flex-direction: column;
+}
+
+.brasaPerfilRegras > div {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 17px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.brasaPerfilRegras > div:first-child {
+  padding-top: 2px;
+}
+
+.brasaPerfilRegras > div:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.brasaPerfilRegraNumero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 9px;
+  background: #37271e;
+  color: var(--orange);
+  font-weight: 900;
+}
+
+.brasaPerfil .brasaPerfilRegras p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.brasaPerfilRegras strong {
+  color: var(--text);
+}
+
+.brasaPerfil .brasaPerfilFidelidade {
+  background: linear-gradient(155deg, #302319 0%, var(--surface) 58%);
+  border-color: #6d3d22;
+}
+
+.brasaPerfilSaldoTopo {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brasaPerfilSaldoTopo h2 {
+  margin-bottom: 0;
+}
+
+.brasaPerfilSelo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 49px;
+  height: 49px;
+  border: 1px solid #91502a;
+  border-radius: 12px;
+  background: #392518;
+  color: #ff9e5a;
+  font-weight: 900;
+}
+
+.brasaPerfilSaldo {
+  display: flex;
+  align-items: baseline;
+  gap: 11px;
+  flex-wrap: wrap;
+  margin: 24px 0 28px;
+}
+
+.brasaPerfil .brasaPerfilSaldo .saldoPontos {
+  margin: 0;
+  color: var(--orange);
+  font-size: clamp(42px, 6vw, 58px);
+  line-height: 1;
+  font-weight: 900;
+}
+
+.brasaPerfilSaldo > span {
+  color: #c5b4aa;
+  font-size: 13px;
+}
+
+.brasaPerfilProgressoTopo {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 12px;
+  font-size: 12px;
+}
+
+.brasaPerfilProgressoTopo span {
+  color: #cabeb6;
+}
+
+.brasaPerfilProgressoTopo strong {
+  white-space: nowrap;
+}
+
+.brasaPerfilBarra {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 100px;
+  background: #49413c;
+}
+
+.brasaPerfilBarra > div {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ff6a00, #ffb35b);
+  transition: width 0.2s;
+}
+
+.brasaPerfil .brasaPerfilProgressoMensagem {
+  margin: 13px 0 0;
+  color: #e8b995;
+  font-size: 13px;
+}
+
+.brasaPerfilRecompensaTopo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.brasaPerfilRecompensaTopo h2 {
+  margin-bottom: 8px;
+  color: var(--orange);
+  font-size: 30px;
+}
+
+.brasaPerfil .brasaPerfilRecompensaTopo p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.brasaPerfilDisponivel,
+.brasaPerfilPendente {
+  padding: 7px 11px;
+  border: 1px solid #88542f;
+  border-radius: 100px;
+  color: #ffbd8b;
+  background: #37281d;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.brasaPerfilDisponivel {
+  background: #18352b;
+  border-color: #376953;
+  color: #a5e7c3;
+}
+
+.brasaPerfil .brasaPerfilRecompensaAviso {
+  padding: 13px 14px;
+  margin: 20px 0 0;
+  border-radius: 9px;
+  background: var(--surface-alt);
+  color: #d2cbc5;
+  font-size: 13px;
+}
+
+.brasaPerfil .brasaPerfilPreferencias {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 15px;
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-alt);
+  cursor: pointer;
+}
+
+.brasaPerfilPreferencias input {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  margin-top: 2px;
+  accent-color: var(--orange);
+}
+
+.brasaPerfilPreferencias strong,
+.brasaPerfilPreferencias small {
+  display: block;
+}
+
+.brasaPerfilPreferencias strong {
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.brasaPerfilPreferencias small {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.brasaPerfil .brasaPerfilAvisoDemo {
+  margin: 14px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.brasaPerfil .brasaPerfilMensagem {
+  color: #a5e7c3;
+  font-size: 13px;
+}
+
+.brasaPerfilSalvar {
+  width: 100%;
+  min-height: 45px;
+  margin-top: 8px;
+  background: var(--orange);
+  border-color: var(--orange);
+  color: #201209;
+  font-weight: 800;
+}
+
+.brasaPerfilSalvar:hover:not(:disabled) {
+  background: var(--orange-hover);
+  border-color: var(--orange-hover);
+}
+
+.brasaPerfilRodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 24px;
+}
+
+.brasaPerfilRodape button {
+  padding: 12px 24px;
+  background: var(--orange);
+  border-color: var(--orange);
+  color: #201209;
+  font-weight: 800;
+}
+
+.brasaPerfilRodape button:hover:not(:disabled) {
+  background: var(--orange-hover);
+  border-color: var(--orange-hover);
+}
+
+.brasaPerfil .brasaPerfilRodape p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+@media (max-width: 600px) {
+  .brasaPerfilDestaque {
+    padding: 20px;
+  }
+
+  .brasaPerfilIdentidade {
+    align-items: flex-start;
+    gap: 13px;
+  }
+
+  .brasaPerfilAvatar {
+    width: 54px;
+    height: 54px;
+    flex-basis: 54px;
+    font-size: 27px;
+  }
+
+  .brasaPerfilMarca {
+    display: none;
+  }
+
+  .brasaPerfil .brasaPerfilCard {
+    padding: 20px;
+  }
+}
+
+/* Acesso demonstrativo BRASA 21 */
+
+.brasaAuth {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  width: 100%;
+  max-width: 1220px;
+  min-height: 690px;
+  overflow: hidden;
+  margin: 28px auto 50px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+}
+
+.brasaAuthApresentacao {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  min-height: 620px;
+  padding: 40px;
+  background: #161412;
+}
+
+.brasaAuthImagem {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 65% center;
+}
+
+.brasaAuthApresentacao::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(11, 12, 13, 0.10) 10%, rgba(12, 12, 14, 0.76) 53%, rgba(11, 12, 13, 0.98) 100%);
+}
+
+.brasaAuthApresentacaoConteudo {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.brasaAuthEtiqueta {
+  display: block;
+  color: #ff9a4d;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.brasaAuth .brasaAuthApresentacao h1 {
+  margin: 18px 0;
+  font-size: clamp(36px, 4vw, 60px);
+  font-weight: 900;
+  line-height: 1.04;
+  text-align: left;
+}
+
+.brasaAuthApresentacao h1 span {
+  color: var(--orange);
+}
+
+.brasaAuthApresentacaoConteudo > p {
+  max-width: 385px;
+  margin: 0;
+  color: #e0ddd7;
+  font-size: 15px;
+}
+
+.brasaAuthDestaques {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 24px;
+}
+
+.brasaAuthDestaques span {
+  padding: 8px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 100px;
+  background: rgba(19, 19, 21, 0.64);
+  color: #f1eae3;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.brasaAuthConteudo {
+  min-width: 0;
+  padding: 36px;
+}
+
+.brasaAuthTopo h2 {
+  margin: 11px 0 10px;
+  font-size: clamp(26px, 3vw, 35px);
+  font-weight: 900;
+}
+
+.brasaAuthTopo p,
+.brasaAuthCard > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.brasaAuth .brasaAuthCard {
+  margin-top: 22px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: #222327;
+}
+
+.brasaAuthCardCabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.brasaAuthNumero {
+  display: block;
+  color: #f59a57;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+}
+
+.brasaAuthSelo {
+  padding: 5px 9px;
+  border: 1px solid #724b2b;
+  border-radius: 100px;
+  background: #372517;
+  color: #ffb580;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.brasaAuthCard h3 {
+  margin: 12px 0 7px;
+  font-size: 20px;
+}
+
+.brasaAuthContaTeste {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 12px;
+  border: 1px solid #46413b;
+  border-radius: 10px;
+  background: #2b2927;
+}
+
+.brasaAuthAvatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border-radius: 10px;
+  background: #5c3419;
+  color: #ffb477;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.brasaAuthContaTeste strong,
+.brasaAuthContaTeste span {
+  display: block;
+}
+
+.brasaAuthContaTeste strong {
+  font-size: 14px;
+}
+
+.brasaAuthContaTeste span {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.brasaAuth .brasaAuthBotao {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 15px;
+  border-color: var(--orange);
+  background: var(--orange);
+  color: #211207;
+  font-weight: 800;
+}
+
+.brasaAuth .brasaAuthBotao:hover:not(:disabled) {
+  border-color: var(--orange-hover);
+  background: var(--orange-hover);
+}
+
+.brasaAuth .brasaAuthBotaoSecundario {
+  margin-top: 8px;
+  border-color: #6f492b;
+  background: #4b3020;
+  color: #fff1e4;
+}
+
+.brasaAuth .brasaAuthBotaoSecundario:hover:not(:disabled) {
+  border-color: var(--orange);
+  background: #633a21;
+}
+
+.brasaAuthSeparador {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0 -6px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.brasaAuthSeparador::before,
+.brasaAuthSeparador::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: var(--border);
+}
+
+.brasaAuth .brasaAuthCard form {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  margin: 16px 0 0;
+}
+
+.brasaAuthLabel {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.brasaAuth .brasaAuthCard input[type="text"] {
+  min-height: 46px;
+  margin-top: -6px;
+}
+
+.brasaAuth .brasaAuthCheckbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0;
+  color: #d8d4ce;
+  font-size: 12px;
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.brasaAuthCheckbox input {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 17px;
+  margin: 0;
+  accent-color: var(--orange);
+}
+
+.brasaAuth .brasaAuthErro {
+  margin: 12px 0 0;
+  padding: 11px 12px;
+  border: 1px solid #a4584b;
+  border-radius: 9px;
+  background: #39231f;
+  color: #ffc0b5;
+  font-size: 12px;
+}
+
+.brasaAuth .brasaAuthRodape {
+  margin-top: 24px;
+  padding-top: 18px;
+}
+
+.brasaAuthRodape p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.brasaAuthRodape button {
+  width: 100%;
+  border: 1px solid #625449;
+  background: transparent;
+  color: #f1ded0;
+  font-weight: 700;
+}
+
+.brasaAuthRodape button:hover:not(:disabled) {
+  border-color: var(--orange);
+  background: #30261f;
+}
+
+.brasaAuth .brasaAuthNota {
+  margin: 18px 0 0;
+  color: #aaa39d;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .brasaAuth {
+    grid-template-columns: 1fr;
+  }
+
+  .brasaAuthApresentacao {
+    min-height: 330px;
+    padding: 30px;
+  }
+
+  .brasaAuthImagem {
+    object-position: center 48%;
+  }
+
+  .brasaAuthApresentacao::after {
+    background: linear-gradient(180deg, rgba(9, 10, 11, 0.05), rgba(9, 10, 11, 0.95));
+  }
+
+  .brasaAuth .brasaAuthApresentacao h1 {
+    font-size: clamp(34px, 7vw, 48px);
+  }
+}
+
+@media (max-width: 600px) {
+  .brasaAuth {
+    margin: 16px auto 35px;
+  }
+
+  .brasaAuthApresentacao {
+    min-height: 300px;
+    padding: 24px;
+  }
+
+  .brasaAuthDestaques {
+    gap: 6px;
+  }
+
+  .brasaAuthDestaques span {
+    font-size: 10px;
+  }
+
+  .brasaAuthConteudo {
+    padding: 24px 18px;
+  }
+
+  .brasaAuth .brasaAuthCard {
+    padding: 18px;
+  }
+}
+
+/* Totem BRASA 21 */
+
+.brasaTotem {
+  padding-bottom: 20px;
+}
+
+.brasaTotem .brasaTotemTopo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px 24px;
+  background: #1b1c20;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--orange);
+  border-radius: 14px;
+}
+
+.brasaTotemMarca {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.brasaTotemMarca img {
+  width: 74px;
+  height: 74px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.brasaTotemMarca h1 {
+  margin: 5px 0;
+  font-size: clamp(19px, 2.8vw, 30px);
+  letter-spacing: -0.04em;
+  font-weight: 900;
+}
+
+.brasaTotemMarca p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.brasaTotem .brasaTotemSair {
+  background: transparent;
+  border-color: #5b4b45;
+  color: #f0c3aa;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.brasaTotem .brasaTotemSair:hover:not(:disabled) {
+  background: #33241f;
+  border-color: var(--orange);
+}
+
+.brasaTotemEtapas {
+  display: flex;
+  justify-content: space-between;
+  gap: 7px;
+  margin-bottom: 22px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #191a1e;
+  overflow-x: auto;
+}
+
+.brasaTotemEtapas > span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  gap: 8px;
+  min-width: max-content;
+  padding: 7px 10px;
+  color: #a7a4a0;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.brasaTotemEtapas > span.atual {
+  color: #ffb67d;
+}
+
+.brasaTotemEtapas > span.concluida {
+  color: #eee0d6;
+}
+
+.brasaTotemEtapaNumero {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border: 1px solid #535056;
+  border-radius: 50%;
+  font-size: 12px;
+}
+
+.brasaTotemEtapas .atual .brasaTotemEtapaNumero {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: #201208;
+}
+
+.brasaTotemEtapas .concluida .brasaTotemEtapaNumero {
+  border-color: #61735e;
+  background: #304233;
+  color: #b3e9a7;
+}
+
+.brasaTotem .brasaTotemLayout {
+  align-items: start;
+}
+
+.brasaTotem .brasaMenuCampanha {
+  display: none;
+}
+
+.brasaTotem .menuHeader h1 {
+  font-size: clamp(27px, 3.5vw, 40px);
+}
+
+.brasaTotem .produtoCard {
+  border-radius: 14px;
+}
+
+.brasaTotem .produtoCard button {
+  min-height: 50px;
+}
+
+.brasaTotem .brasaTotemCarrinho {
+  padding: 22px;
+  background: #202126;
+  border: 1px solid #49413c;
+  border-radius: 14px;
+}
+
+.brasaTotemCarrinhoTopo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.brasaTotemCarrinhoTopo h2 {
+  margin: 6px 0 0;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.brasaTotemQuantidade {
+  display: grid;
+  place-items: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 4px;
+  border-radius: 10px;
+  background: var(--orange);
+  color: #281308;
+  font-weight: 900;
+}
+
+.brasaTotemVazio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 33px 10px;
+  text-align: center;
+}
+
+.brasaTotemVazio > span {
+  margin-bottom: 12px;
+  font-size: 35px;
+}
+
+.brasaTotemVazio strong {
+  font-size: 14px;
+}
+
+.brasaTotemVazio p {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.brasaTotemLista {
+  margin-top: 10px;
+}
+
+.brasaTotem .brasaTotemItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 0;
+}
+
+.brasaTotemItem > img {
+  width: 76px;
+  height: 80px;
+  flex: 0 0 76px;
+  border: 1px solid #454545;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #131316;
+}
+
+.brasaTotemItemConteudo {
+  flex: 1;
+  min-width: 0;
+}
+
+.brasaTotemItemConteudo h3 {
+  margin: 0 0 6px;
+  font-size: 14px;
+}
+
+.brasaTotemItemConteudo > strong {
+  display: block;
+  color: #ffb27b;
+  font-size: 14px;
+}
+
+.brasaTotemItemConteudo > p {
+  overflow-wrap: anywhere;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.brasaTotem .brasaTotemControles {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.brasaTotem .brasaTotemControles button {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.brasaTotemControles span {
+  min-width: 20px;
+  text-align: center;
+  font-weight: 800;
+}
+
+.brasaTotem .brasaTotemControles .brasaTotemRemover {
+  width: auto;
+  min-width: auto;
+  padding: 0 7px;
+  margin-left: auto;
+  background: transparent;
+  border-color: transparent;
+  color: #e8a79f;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.brasaTotem .brasaTotemControles .brasaTotemRemover:hover:not(:disabled) {
+  background: #342421;
+  border-color: #85564d;
+}
+
+.brasaTotem .brasaTotemTotais {
+  padding-top: 16px;
+  margin-top: 8px;
+}
+
+.brasaTotemTotais > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 10px 0;
+  color: #d5d1cd;
+  font-size: 13px;
+}
+
+.brasaTotemTotais .brasaTotemTotal {
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 17px;
+  border-top: 1px solid #53473e;
+  color: white;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.brasaTotemTotal strong {
+  color: var(--orange);
+  font-size: 25px;
+}
+
+.brasaTotem .brasaTotemAcoes {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.brasaTotem .brasaTotemAcoes button {
+  width: 100%;
+}
+
+.brasaTotem .brasaTotemPrincipal {
+  min-height: 53px;
+  border-color: var(--orange);
+  background: var(--orange);
+  color: #251208;
+  font-weight: 900;
+}
+
+.brasaTotem .brasaTotemPrincipal:hover:not(:disabled) {
+  background: var(--orange-hover);
+  border-color: var(--orange-hover);
+}
+
+.brasaTotem .brasaTotemSecundario {
+  min-height: 51px;
+  border-color: #64544a;
+  background: transparent;
+  color: #f4e2d4;
+  font-weight: 800;
+}
+
+.brasaTotem .brasaTotemSecundario:hover:not(:disabled) {
+  border-color: var(--orange);
+  background: #33251e;
+}
+
+.brasaTotem .brasaTotemIdentificacao {
+  max-width: 570px;
+  padding: clamp(23px, 4vw, 38px);
+  margin: 35px auto;
+  border: 1px solid #53483f;
+  border-top: 3px solid var(--orange);
+  border-radius: 16px;
+  background: #212226;
+}
+
+.brasaTotemIdentificacao h2 {
+  margin: 10px 0 12px;
+  font-size: clamp(30px, 5vw, 42px);
+  font-weight: 900;
+}
+
+.brasaTotemIdentificacao > p {
+  color: #c2bdb7;
+  font-size: 14px;
+}
+
+.brasaTotemConta {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 18px;
+  margin: 22px 0;
+  border: 1px solid #554639;
+  border-radius: 12px;
+  background: #2a2927;
+}
+
+.brasaTotemAvatar {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  background: #5c351f;
+  border-radius: 12px;
+  color: #ffba87;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.brasaTotemConta strong {
+  font-size: 16px;
+}
+
+.brasaTotemConta p {
+  margin: 4px 0 0;
+  color: #bbb1a9;
+  font-size: 12px;
+}
+
+.brasaTotemIdentificacao > button {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.brasaTotemIdentificacao > small {
+  display: block;
+  margin-top: 20px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.brasaTotemErro {
+  padding: 12px;
+  border: 1px solid #aa6657;
+  border-radius: 8px;
+  background: #392520;
+  color: #ffcdc4;
+}
+
+.brasaTotemAviso {
+  padding: 35px;
+  text-align: center;
+}
+
+.brasaTotem .brasaTotemNota {
+  margin: 30px 0 10px;
+  color: #8e8d92;
+  text-align: center;
+  font-size: 11px;
+}
+
+@media (max-width: 900px) {
+  .brasaTotem .brasaTotemLayout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .brasaTotem .brasaTotemCarrinho {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+@media (max-width: 600px) {
+  .brasaTotem .brasaTotemTopo {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+  }
+
+  .brasaTotemMarca img {
+    width: 54px;
+    height: 54px;
+  }
+
+  .brasaTotemMarca h1 {
+    font-size: 20px;
+  }
+
+  .brasaTotemMarca p {
+    font-size: 11px;
+  }
+
+  .brasaTotem .brasaTotemSair {
+    width: 100%;
+  }
+
+  .brasaTotemEtapas > span {
+    padding: 6px;
+    font-size: 11px;
+  }
+
+  .brasaTotemEtapaNumero {
+    width: 26px;
+    height: 26px;
+  }
+
+  .brasaTotem .brasaTotemCarrinho {
+    padding: 17px;
+  }
+}
+
+/* Painel operacional BRASA 21 */
+
+.brasaOperacao {
+  min-width: 0;
+}
+
+.brasaOperacaoTopo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 15px 0 23px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brasaOperacaoIdentidade {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+
+.brasaOperacaoMarca {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.brasaOperacaoMarca strong {
+  color: var(--orange);
+}
+
+.brasaOperacaoSeparador {
+  width: 1px;
+  height: 24px;
+  background: #535357;
+}
+
+.brasaOperacaoArea {
+  color: #bcb7b0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+}
+
+.brasaOperacao .brasaOperacaoVoltar {
+  background: #222327;
+  border: 1px solid var(--border);
+  color: #f3ece6;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.brasaOperacaoApresentacao {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 25px;
+  padding: 42px 0 29px;
+}
+
+.brasaOperacaoLegenda {
+  display: block;
+  margin-bottom: 9px;
+  color: #ff9c56;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+}
+
+.brasaOperacaoApresentacao h1 {
+  margin: 0 0 8px;
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.brasaOperacaoApresentacao h1 span {
+  color: var(--orange);
+}
+
+.brasaOperacaoApresentacao p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.brasaOperacaoDemonstracao {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-shrink: 0;
+  padding: 12px 14px;
+  border: 1px solid #6b4b32;
+  border-radius: 9px;
+  background: #2b241e;
+  color: #ffd7b6;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+}
+
+.brasaOperacaoSinal {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  background: var(--orange);
+  border-radius: 50%;
+}
+
+.brasaOperacaoResumo {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 42px;
+}
+
+.brasaOperacaoResumoCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 145px;
+  padding: 23px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: linear-gradient(140deg, #24262b, #1a1c20);
+}
+
+.brasaOperacaoResumoCard > span {
+  color: #c4bfb9;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.brasaOperacaoResumoCard > strong {
+  color: #fff;
+  font-size: 38px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.brasaOperacaoResumoCard > strong.brasaOperacaoResumoStatus {
+  color: #ff9b57;
+  font-size: clamp(18px, 2.4vw, 25px);
+  line-height: 1.2;
+}
+
+.brasaOperacaoResumoCard small {
+  color: #97959a;
+  font-size: 11px;
+}
+
+.brasaOperacaoSecaoTitulo {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 20px;
+  margin: 0 0 18px;
+}
+
+.brasaOperacaoSecaoTitulo h2 {
+  margin: 0;
+  font-size: clamp(23px, 3vw, 31px);
+  font-weight: 900;
+}
+
+.brasaOperacaoStatus {
+  padding: 8px 13px;
+  border: 1px solid #6f5439;
+  border-radius: 100px;
+  background: #32271d;
+  color: #ffcf9f;
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.brasaOperacaoStatus-1 {
+  border-color: #795332;
+  background: #3c281b;
+  color: #ffb879;
+}
+
+.brasaOperacaoStatus-2 {
+  border-color: #527969;
+  background: #1b342b;
+  color: #a4eec3;
+}
+
+.brasaOperacaoStatus-3 {
+  border-color: #5d686b;
+  background: #293034;
+  color: #c4d8dc;
+}
+
+.brasaOperacaoVazio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  padding: 66px 22px;
+  border: 1px dashed #55565b;
+  border-radius: 15px;
+  background: #1b1d21;
+  text-align: center;
+}
+
+.brasaOperacaoVazioIcone {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 20px;
+  border: 1px solid #744b2a;
+  border-radius: 18px;
+  background: #382519;
+  color: #ff9e5b;
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.brasaOperacaoVazio h3 {
+  margin-bottom: 8px;
+  font-size: 24px;
+}
+
+.brasaOperacaoVazio p {
+  max-width: 430px;
+  margin: 0 0 22px;
+  color: var(--muted);
+}
+
+.brasaOperacao .brasaOperacaoVazio button,
+.brasaOperacao .brasaOperacaoAvancar {
+  border-color: var(--orange);
+  background: var(--orange);
+  color: #21150d;
+  font-weight: 900;
+}
+
+.brasaOperacao .brasaOperacaoVazio button:hover:not(:disabled),
+.brasaOperacao .brasaOperacaoAvancar:hover:not(:disabled) {
+  border-color: var(--orange-hover);
+  background: var(--orange-hover);
+}
+
+.brasaOperacaoPedidoLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 1fr);
+  gap: 19px;
+  align-items: start;
+}
+
+.brasaOperacaoPedido,
+.brasaOperacaoControle {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #3d3d42;
+  border-radius: 14px;
+  background: #1d1f23;
+}
+
+.brasaOperacaoPedidoCabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 24px;
+  border-bottom: 1px solid var(--border);
+  background: #26272b;
+}
+
+.brasaOperacaoPedidoCabecalho h3 {
+  margin: 0 0 8px;
+  overflow-wrap: anywhere;
+  font-size: clamp(20px, 2.8vw, 29px);
+  font-weight: 900;
+}
+
+.brasaOperacaoPedidoCabecalho p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.brasaOperacaoQuantidade {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 65px;
+  min-height: 65px;
+  flex-shrink: 0;
+  border: 1px solid #7e4b26;
+  border-radius: 12px;
+  background: #39271b;
+}
+
+.brasaOperacaoQuantidade strong {
+  color: #ff9c56;
+  font-size: 25px;
+  line-height: 1.1;
+}
+
+.brasaOperacaoQuantidade span {
+  color: #d8bca7;
+  font-size: 11px;
+}
+
+.brasaOperacaoItens {
+  padding: 4px 24px;
+}
+
+.brasaOperacaoItem {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 19px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.brasaOperacaoItem:last-child {
+  border-bottom: none;
+}
+
+.brasaOperacaoItem img {
+  width: 76px;
+  height: 76px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #2b2a28;
+}
+
+.brasaOperacaoItemDetalhes {
+  flex: 1;
+  min-width: 0;
+}
+
+.brasaOperacaoItemDetalhes > strong {
+  display: block;
+  margin-bottom: 5px;
+  color: #f7f3ef;
+  font-size: 15px;
+}
+
+.brasaOperacaoItemDetalhes > span {
+  color: #a9a4a0;
+  font-size: 12px;
+}
+
+.brasaOperacaoItemDetalhes p {
+  margin: 9px 0 0;
+  overflow-wrap: anywhere;
+  color: #e7c7aa;
+  font-size: 12px;
+}
+
+.brasaOperacaoItemQuantidade {
+  display: grid;
+  place-items: center;
+  min-width: 38px;
+  height: 36px;
+  padding: 0 7px;
+  border: 1px solid #66462f;
+  border-radius: 8px;
+  background: #34261d;
+  color: #ffb782;
+  font-weight: 900;
+}
+
+.brasaOperacaoPedidoRodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.brasaOperacaoPedidoRodape span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.brasaOperacaoPedidoRodape strong {
+  color: #ff9c56;
+  font-size: 22px;
+}
+
+.brasaOperacaoControle {
+  padding: 25px;
+}
+
+.brasaOperacaoControle h3 {
+  margin-bottom: 22px;
+  font-size: 24px;
+}
+
+.brasaOperacaoEtapas {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0 0 22px;
+  padding: 0;
+  list-style: none;
+}
+
+.brasaOperacaoEtapa {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding-bottom: 22px;
+  color: #aaa6a1;
+}
+
+.brasaOperacaoEtapa:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  top: 35px;
+  left: 17px;
+  width: 2px;
+  height: calc(100% - 35px);
+  background: #45444a;
+}
+
+.brasaOperacaoEtapa.concluida:not(:last-child)::before {
+  background: #6b946f;
+}
+
+.brasaOperacaoEtapaNumero {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: 1px solid #57565c;
+  border-radius: 50%;
+  background: #282a2e;
+  color: #bbb8b2;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.brasaOperacaoEtapa.concluida .brasaOperacaoEtapaNumero {
+  border-color: #628368;
+  background: #25422f;
+  color: #b5f2c0;
+}
+
+.brasaOperacaoEtapa.atual .brasaOperacaoEtapaNumero {
+  border-color: var(--orange);
+  background: var(--orange);
+  color: #2a170d;
+}
+
+.brasaOperacaoEtapa strong {
+  display: block;
+  padding-top: 2px;
+  font-size: 13px;
+}
+
+.brasaOperacaoEtapa.atual strong {
+  color: #ffb67e;
+}
+
+.brasaOperacaoEtapa small {
+  display: block;
+  margin-top: 4px;
+  color: #87848b;
+  font-size: 11px;
+}
+
+.brasaOperacaoAviso {
+  padding: 16px;
+  border: 1px solid #68482f;
+  border-radius: 10px;
+  background: #30251d;
+}
+
+.brasaOperacaoAviso strong {
+  color: #ffbb89;
+  font-size: 14px;
+}
+
+.brasaOperacaoAviso p {
+  margin: 7px 0 0;
+  color: #d4beb1;
+  font-size: 12px;
+}
+
+.brasaOperacao .brasaOperacaoAvancar {
+  width: 100%;
+  min-height: 52px;
+  margin-top: 17px;
+}
+
+.brasaOperacaoProxima,
+.brasaOperacaoFinalizado {
+  margin: 12px 0 0;
+  color: #a9a3a0;
+  font-size: 12px;
+  text-align: center;
+}
+
+.brasaOperacaoFinalizado {
+  padding: 13px;
+  border: 1px solid #456250;
+  border-radius: 8px;
+  background: #1e3327;
+  color: #b4e1bf;
+}
+
+.brasaOperacaoUnidades {
+  margin-top: 52px;
+}
+
+.brasaOperacaoUnidadesTotal {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.brasaOperacao .brasaOperacaoUnidadesGrid {
+  margin: 0;
+}
+
+.brasaOperacao .brasaOperacaoUnidade {
+  padding: 22px;
+  background: #202227;
+}
+
+.brasaOperacaoUnidadeTopo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.brasaOperacaoUnidadeTopo h3 {
+  margin-bottom: 10px;
+  font-size: 17px;
+}
+
+.brasaOperacaoAberta,
+.brasaOperacaoFechada {
+  flex-shrink: 0;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.brasaOperacaoAberta {
+  background: #24412e;
+  color: #a8ecc0;
+}
+
+.brasaOperacaoFechada {
+  background: #49302c;
+  color: #ffc0b1;
+}
+
+.brasaOperacaoUnidade p {
+  margin: 5px 0;
+  color: #aaa7a5;
+  font-size: 12px;
+}
+
+.brasaOperacaoUnidadeRodape {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  color: #e6b88e;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.brasaOperacaoRodape {
+  margin: 34px 0 0;
+  color: #85838a;
+  font-size: 11px;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .brasaOperacaoPedidoLayout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .brasaOperacaoTopo,
+  .brasaOperacaoApresentacao {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .brasaOperacao .brasaOperacaoVoltar {
+    width: 100%;
+  }
+
+  .brasaOperacaoResumo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .brasaOperacaoResumoCard {
+    min-height: 120px;
+  }
+
+  .brasaOperacaoSecaoTitulo {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .brasaOperacaoPedidoCabecalho,
+  .brasaOperacaoPedidoRodape {
+    padding: 18px;
+  }
+
+  .brasaOperacaoItens {
+    padding: 0 16px;
+  }
+
+  .brasaOperacaoItem {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .brasaOperacaoItem img {
+    width: 55px;
+    height: 55px;
+  }
+
+  .brasaOperacaoControle {
+    padding: 21px;
+  }
+}
